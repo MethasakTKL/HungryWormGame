@@ -1,11 +1,13 @@
 #:kivy 2.1.0
 
-
-<Form>:
-
-<Cell>:
+<Sprite>
+    bgcolor: 1, 1, 1, 1
+    size_hint: None,None
+    size: [app.sprize_size] * 2
+    pos: [x * app.sprize_size for x in self.coord]
     canvas:
-        Rectangle:
-            size: self.graphical_size
-            pos: self.graphical_pos
-            # source: 'Head.png'
+        Color
+            rgba: self.bgcolor
+        Rectangle
+            pos: self.pos
+            size: self.size
