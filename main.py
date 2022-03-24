@@ -1,5 +1,3 @@
-
-from tkinter import W
 from kivy.app import App
 from kivy.metrics import sp
 from kivy.core.window import Window
@@ -11,9 +9,9 @@ from kivy.animation import Animation
 from random import randint
 
 # set size of window
-SPRIZE_SIZE = sp(20)
-COLS = int(Window.width / SPRIZE_SIZE)
-ROWS = int(Window.height / SPRIZE_SIZE)
+SPRITE_SIZE = sp(20)
+COLS = int(Window.width / SPRITE_SIZE)
+ROWS = int(Window.height / SPRITE_SIZE)
 
 # set worm lenght and speed
 LENGTH = 3
@@ -38,32 +36,34 @@ class Sprite(Widget):
     bgcolor = kp.ListProperty([0, 0, 0, 0])
 
 SPRITES = defaultdict(lambda: Sprite())
-class HungryWormApp(App):
+class Worm(App):
+    sprize_size = kp.NumericProperty(SPRITE_SIZE)
+    
     head = kp.ListProperty([0, 0])
     worm = kp.ListProperty()
 
     food = kp.ListProperty([0, 0])
 
-    direction = kp.schedule_interval(UP, options=(LEFT, RIGHT, UP, DOWN))
+    direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN))
 
     def on_start(self):
         Clock.schedule_interval(self.move, MOVESPEED)
 
-    def on_head(self):
+    def on_head(self,*args):
         self.worm.append(self.head)
 
-    def on_worm(self):
+    def on_worm(self,*args):
         for index, coord in enumerate(self.worm):
             sprite = SPRITES[index]
             sprite.coord = coord
             if not sprite.parent:
                 self.root.add_widget(sprite)
 
-    def move(self):
+    def move(self, *args):
         new_head = [sum(x) for x in zip(
             self.head, direction_values[self.direction])]
         self.head = new_head
 
 
 if __name__ == '__main__':
-    HungryWormApp().run()
+    Worm().run()
