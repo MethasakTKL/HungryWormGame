@@ -35,11 +35,17 @@ class HungryWormApp(App):
 
     food = kp.ListProperty([0, 0])
 
+    direction = kp.schedule_interval(UP, options=(LEFT,RIGHT,UP,DOWN))
+
     def on_start(self):
         Clock.schedule_interval(self.move, MOVESPEED)
 
+    def on_head(self):
+        self.worm.append(self.head)
 
-
+    def move(self):
+        new_head = [sum(x) for x in zip(self.head, direction_values[self.direction])]
+        self.head = new_head
         
 
 
