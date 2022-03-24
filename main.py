@@ -1,11 +1,10 @@
-
-from telnetlib import DO
-from kivy.app import App
-from kivy.core.window import Window
-from kivy.uix.widget import Widget
-from kivy.uix.button import Button
-from kivy.metrics import sp
 from kivy import properties as kp
+from kivy.app import App
+from kivy.clock import Clock
+from kivy.core.window import Window
+from kivy.metrics import sp
+from kivy.uix.button import Button
+from kivy.uix.widget import Widget
 
 # set size of window
 SPRIZE_SIZE = sp(20)
@@ -35,6 +34,13 @@ class HungryWormApp(App):
     worm = kp.ListProperty()
 
     food = kp.ListProperty([0, 0])
+
+    def on_start(self):
+        Clock.schedule_interval(self.move, MOVESPEED)
+
+
+
+        
 
 
 if __name__ == '__main__':
