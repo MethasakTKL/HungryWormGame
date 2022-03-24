@@ -14,7 +14,7 @@ COLS = int(Window.width / SPRITE_SIZE)
 ROWS = int(Window.height / SPRITE_SIZE)
 
 # set worm lenght and speed
-LENGTH = 3
+LENGHT = 3
 MOVESPEED = .1
 
 # set direction
@@ -38,9 +38,10 @@ class Sprite(Widget):
 SPRITES = defaultdict(lambda: Sprite())
 class Worm(App):
     sprize_size = kp.NumericProperty(SPRITE_SIZE)
-    
+
     head = kp.ListProperty([0, 0])
     worm = kp.ListProperty()
+    lenght = kp.NumericProperty(LENGHT)
 
     food = kp.ListProperty([0, 0])
 
@@ -50,7 +51,7 @@ class Worm(App):
         Clock.schedule_interval(self.move, MOVESPEED)
 
     def on_head(self,*args):
-        self.worm.append(self.head)
+        self.worm = self.worm[-self.lenght:] + [self.head]
 
     def on_worm(self,*args):
         for index, coord in enumerate(self.worm):
