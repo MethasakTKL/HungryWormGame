@@ -105,7 +105,9 @@ class Worm(App):
     def die(self):
         self.alpha = ALPHA
         Animation(alpha=0, duration = MOVESPEED).start(self)
-
+        self.worm.clear()
+        self.root.clear_widgets()
+        self.head = self.new_head_location
 
 
 if __name__ == '__main__':
