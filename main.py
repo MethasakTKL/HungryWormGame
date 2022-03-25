@@ -56,6 +56,7 @@ class Worm(App):
     direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN))
 
     def on_start(self):
+        self.head = self.new_head_Location
         Clock.schedule_interval(self.move, MOVESPEED)
         Window.bind(on_keyboard = self.key_handler)
 
