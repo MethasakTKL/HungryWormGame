@@ -58,11 +58,16 @@ class Worm(App):
     def on_start(self):
         self.head = self.new_head_location
         Clock.schedule_interval(self.move, MOVESPEED)
-        Window.bind(on_keyboard = self.key_handler)
+        self._keyboard = Window.request_keyboard(self._on_keyboard_closed, self)
+        self._keyboard.bind(on_key_down=self._on_key_down)
 
-    def key_handler(self, _, __, ___, key, *____):
+    def _on_keyboard_closed(self):
+        self._keyboard.unbind(on_key_down=self._on_key_down)
+        self._keyboard = None
+
+    def _on_key_down(self, keyboard, keycode, text, modifiers):
         try:
-            self.try_change_direction(direction_keys[key])
+            self.try_change_direction(direction_keys[text])
         except KeyError:
             pass
 
