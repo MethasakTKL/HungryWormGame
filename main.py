@@ -29,7 +29,10 @@ direction_values = {
     UP: [0, 1],
     DOWN: [0, -1]
 }
-
+direction_keys = {'a': LEFT, 
+                  'w': UP,
+                  'd': RIGHT,
+                  's': DOWN}
 
 class Sprite(Widget):
     coord = kp.ListProperty([0, 0])
@@ -52,7 +55,10 @@ class Worm(App):
         Window.bind(on_keyboard = self.key_handler)
 
     def key_handler(self, _, __, ___, key, *____):
-        print(key)
+        try:
+            print(direction_keys[key])
+        except KeyError:
+            pass
 
     def on_head(self,*args):
         self.worm = self.worm[-self.lenght:] + [self.head]
