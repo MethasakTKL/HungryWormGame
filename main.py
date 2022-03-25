@@ -95,7 +95,7 @@ class Worm(App):
     def move(self, *args):
         new_head = [sum(x) for x in zip(
             self.head, direction_values[self.direction])]
-        if not self.check_in_bounds(new_head):
+        if not self.check_in_bounds(new_head) or new_head in self.worm:
             return self.die()
         self.head = new_head
     
@@ -105,9 +105,7 @@ class Worm(App):
     def die(self):
         self.alpha = ALPHA
         Animation(alpha=0, duration = MOVESPEED).start(self)
-        self.worm.clear()
-        self.root.clear_widgets()
-        self.head = self.new_head_location
+
 
 
 if __name__ == '__main__':
