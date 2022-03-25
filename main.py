@@ -49,6 +49,10 @@ class Worm(App):
 
     def on_start(self):
         Clock.schedule_interval(self.move, MOVESPEED)
+        Window.bind(on_keyboard = self.key_handler)
+
+    def key_handler(self, _, __, ___, key, *____):
+        print(key)
 
     def on_head(self,*args):
         self.worm = self.worm[-self.lenght:] + [self.head]
