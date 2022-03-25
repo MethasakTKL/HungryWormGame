@@ -16,6 +16,7 @@ ROWS = int(Window.height / SPRITE_SIZE)
 # set worm lenght and speed
 LENGHT = 3
 MOVESPEED = .1
+ALPHA = .5
 
 # set direction
 LEFT = 'left'
@@ -55,6 +56,8 @@ class Worm(App):
 
     direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN))
 
+    alpha = kp.NumericProperty(0)
+
     def on_start(self):
         self.head = self.new_head_location
         Clock.schedule_interval(self.move, MOVESPEED)
@@ -87,10 +90,19 @@ class Worm(App):
     def move(self, *args):
         new_head = [sum(x) for x in zip(
             self.head, direction_values[self.direction])]
+        if not self.check_in_bounds(new_head):
+            return self.die()
         self.head = new_head
     
     def check_in_bounds(self, pos):
         return all(0 <= pos[x] < dim for x, dim in enumerate([COLS, ROWS]))
+    
+    def die(self):
+        self.alpha = ALPHA
+        Animation(alpha=0, duration = MOVESPEED).start(self)
+        self.worm.clear()
+        self.root.clear_widgets()
+        self.head = self.new_head_location
 
 
 if __name__ == '__main__':
