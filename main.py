@@ -56,7 +56,7 @@ class Worm(App):
     direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN))
 
     def on_start(self):
-        self.head = self.new_head_Location
+        self.head = self.new_head_location
         Clock.schedule_interval(self.move, MOVESPEED)
         Window.bind(on_keyboard = self.key_handler)
 
@@ -81,7 +81,7 @@ class Worm(App):
                 self.root.add_widget(sprite)
 
     @property
-    def new_head_Location(self):
+    def new_head_location(self):
         return [randint(2, dim - 2) for dim in [COLS, ROWS]]
 
     def move(self, *args):
