@@ -79,6 +79,10 @@ class Worm(App):
             if not sprite.parent:
                 self.root.add_widget(sprite)
 
+    @property
+    def new_head_Location(self):
+        return [randint(2, dim - 2) for dim in [COLS, ROWS]]
+
     def move(self, *args):
         new_head = [sum(x) for x in zip(
             self.head, direction_values[self.direction])]
