@@ -29,6 +29,11 @@ direction_values = {
     UP: [0, 1],
     DOWN: [0, -1]
 }
+direction_group = {LEFT: 'horizontal',
+                   UP: 'vertical',
+                   RIGHT: 'horizontal',
+                   DOWN: 'vertical'
+}
 direction_keys = {'a': LEFT, 
                   'w': UP,
                   'd': RIGHT,
@@ -56,9 +61,13 @@ class Worm(App):
 
     def key_handler(self, _, __, ___, key, *____):
         try:
-            print(direction_keys[key])
+            self.try_change_direction(direction_keys[key])
         except KeyError:
             pass
+
+    def try_change_direction(self, new_direction):
+        if direction_group[new_direction] != direction_group[self.direction]:
+           self.direction = new_direction
 
     def on_head(self,*args):
         self.worm = self.worm[-self.lenght:] + [self.head]
