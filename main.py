@@ -88,6 +88,9 @@ class Worm(App):
         new_head = [sum(x) for x in zip(
             self.head, direction_values[self.direction])]
         self.head = new_head
+    
+    def check_in_bounds(self, pos):
+        return all(0 <= pos[x] < dim for x, dim in enumerate([COLS, ROWS]))
 
 
 if __name__ == '__main__':
