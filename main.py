@@ -66,12 +66,14 @@ class Worm(App):
     alpha = kp.NumericProperty(0)
 
     def on_start(self):
+        self._keyboard = Window.request_keyboard(self._on_keyboard_closed, self)
+        self._keyboard.bind(on_key_down=self._on_key_down)
+        Window.bind(on_touch_down=self._on_touch_down)
+        Window.bind(on_touch_move=self._on_touch_move)
         self.apple_sprite = Apple()
         self.apple = self.new_apple_location
         self.head = self.new_head_location
         Clock.schedule_interval(self.move, MOVESPEED)
-        self._keyboard = Window.request_keyboard(self._on_keyboard_closed, self)
-        self._keyboard.bind(on_key_down=self._on_key_down)
 
     def on_apple(self, *args):
         self.apple_sprite.coord = self.apple
@@ -85,6 +87,22 @@ class Worm(App):
     def _on_key_down(self, keyboard, keycode, text, modifiers):
         try:
             self.try_change_direction(direction_keys[text])
+        except KeyError:
+            pass
+
+    def _on_touch_down(self, widget, touch):
+        self._touch_point = [touch.x, touch.y]
+
+    def _on_touch_move(self, widget, touch):
+        try:
+            if touch.x <= self._touch_point[0] - 50:
+                self.try_change_direction(LEFT)
+            elif touch.x >= self._touch_point[0] + 50:
+                self.try_change_direction(RIGHT)
+            elif touch.y >= self._touch_point[1] + 50:
+                self.try_change_direction(UP)
+            elif touch.y <= self._touch_point[1] - 50:
+                self.try_change_direction(DOWN)
         except KeyError:
             pass
 
