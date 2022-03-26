@@ -71,6 +71,7 @@ class Worm(App):
         self._keyboard.bind(on_key_down=self._on_key_down)
 
     def on_apple(self, *args):
+        self.apple_sprite.coord = self.apple
         if not self.apple_sprite.parent:
             self.root.add_widget(self.apple_sprite)
 
@@ -124,11 +125,13 @@ class Worm(App):
         return all(0 <= pos[x] < dim for x, dim in enumerate([COLS, ROWS]))
     
     def die(self):
+        self.root.clear_widgets()
         self.alpha = ALPHA
         Animation(alpha=0, duration = MOVESPEED).start(self)
+
         self.worm.clear()
         self.lenght = LENGHT
-        self.root.clear_widgets()
+        self.apple = self.new_apple_location
         self.head = self.new_head_location
 
 
