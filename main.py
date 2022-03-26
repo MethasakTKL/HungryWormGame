@@ -48,6 +48,7 @@ SPRITES = defaultdict(lambda: Sprite())
 
 class Apple(Sprite):
     pass
+
 class Worm(App):
     sprize_size = kp.NumericProperty(SPRITE_SIZE)
 
@@ -59,6 +60,8 @@ class Worm(App):
     apple_sprite = kp.ObjectProperty(Apple)
 
     direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN))
+    buffer_direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN, ''))
+    block_input = kp.BooleanProperty(False)
 
     alpha = kp.NumericProperty(0)
 
@@ -87,7 +90,11 @@ class Worm(App):
 
     def try_change_direction(self, new_direction):
         if direction_group[new_direction] != direction_group[self.direction]:
-           self.direction = new_direction
+            if self.block_input:
+                self.buffer_direction = new_direction
+            else:
+                self.direction = new_direction
+                self.block_input = True
 
     def on_head(self,*args):
         self.worm = self.worm[-self.lenght:] + [self.head]
@@ -111,6 +118,7 @@ class Worm(App):
                 return apple
 
     def move(self, *args):
+        self.block_input = False
         new_head = [sum(x) for x in zip(
             self.head, direction_values[self.direction])]
         if not self.check_in_bounds(new_head) or new_head in self.worm:
@@ -119,6 +127,9 @@ class Worm(App):
         if new_head == self.apple:
             self.lenght += 1
             self.apple = self.new_apple_location
+        if self.buffer_direction:
+            self.try_change_direction(self.buffer_direction)
+            self.buffer_direction = ''
         self.head = new_head
     
     def check_in_bounds(self, pos):
