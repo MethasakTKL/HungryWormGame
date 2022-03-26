@@ -9,12 +9,12 @@ from kivy.animation import Animation
 from random import randint
 
 # set size of window
-SPRITE_SIZE = sp(20)
+SPRITE_SIZE = sp(25)
 COLS = int(Window.width / SPRITE_SIZE)
 ROWS = int(Window.height / SPRITE_SIZE)
 
 # set worm lenght and speed
-LENGHT = 3
+LENGHT = 2
 MOVESPEED = .1
 ALPHA = .5
 
@@ -49,7 +49,7 @@ SPRITES = defaultdict(lambda: Sprite())
 class Apple(Sprite):
     pass
 
-class Worm(App):
+class HungryWorm(App):
     sprize_size = kp.NumericProperty(SPRITE_SIZE)
 
     head = kp.ListProperty([0, 0])
@@ -165,4 +165,4 @@ class Worm(App):
 
 
 if __name__ == '__main__':
-    Worm().run()
+    HungryWorm().run()
