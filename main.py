@@ -45,6 +45,9 @@ class Sprite(Widget):
     bgcolor = kp.ListProperty([0, 0, 0, 0])
 
 SPRITES = defaultdict(lambda: Sprite())
+
+class Apple(Sprite):
+    pass
 class Worm(App):
     sprize_size = kp.NumericProperty(SPRITE_SIZE)
 
@@ -52,17 +55,24 @@ class Worm(App):
     worm = kp.ListProperty()
     lenght = kp.NumericProperty(LENGHT)
 
-    food = kp.ListProperty([0, 0])
+    apple = kp.ListProperty([0, 0])
+    apple_sprite = kp.ObjectProperty(Apple)
 
     direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN))
 
     alpha = kp.NumericProperty(0)
 
     def on_start(self):
+        self.apple_sprite = Apple()
+        self.apple = self.new_apple_location
         self.head = self.new_head_location
         Clock.schedule_interval(self.move, MOVESPEED)
         self._keyboard = Window.request_keyboard(self._on_keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_key_down)
+
+    def on_apple(self, *args):
+        if not self.apple_sprite.parent:
+            self.root.add_widget(self.apple_sprite)
 
     def _on_keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_key_down)
@@ -92,11 +102,22 @@ class Worm(App):
     def new_head_location(self):
         return [randint(2, dim - 2) for dim in [COLS, ROWS]]
 
+    @property
+    def new_apple_location(self):
+        while True:
+            apple = [randint(0, dim) for dim in [COLS, ROWS]]
+            if apple not in self.worm and apple != self.apple:
+                return apple
+
     def move(self, *args):
         new_head = [sum(x) for x in zip(
             self.head, direction_values[self.direction])]
         if not self.check_in_bounds(new_head) or new_head in self.worm:
             return self.die()
+        self.head = new_head
+        if new_head == self.apple:
+            self.lenght += 1
+            self.apple = self.new_apple_location
         self.head = new_head
     
     def check_in_bounds(self, pos):
@@ -106,6 +127,7 @@ class Worm(App):
         self.alpha = ALPHA
         Animation(alpha=0, duration = MOVESPEED).start(self)
         self.worm.clear()
+        self.lenght = LENGHT
         self.root.clear_widgets()
         self.head = self.new_head_location
 
