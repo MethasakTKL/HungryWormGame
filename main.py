@@ -128,7 +128,7 @@ class HungryWorm(App):
     @property
     def new_apple_location(self):
         while True:
-            apple = [randint(0, dim) for dim in [COLS, ROWS]]
+            apple = [randint(1, dim - 1) for dim in [COLS, ROWS]]
             if apple not in self.worm and apple != self.apple:
                 return apple
 
