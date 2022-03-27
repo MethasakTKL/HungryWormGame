@@ -13,8 +13,8 @@ SPRITE_SIZE = sp(25)
 COLS = int(Window.width / SPRITE_SIZE)
 ROWS = int(Window.height / SPRITE_SIZE)
 
-# set worm lenght and speed
-LENGHT = 2
+# set worm length and speed
+LENGTH = 2
 MOVESPEED = .1
 ALPHA = .5
 
@@ -30,15 +30,20 @@ direction_values = {
     UP: [0, 1],
     DOWN: [0, -1]
 }
-direction_group = {LEFT: 'horizontal',
-                   UP: 'vertical',
-                   RIGHT: 'horizontal',
-                   DOWN: 'vertical'
+
+direction_group = {
+    LEFT: 'horizontal',
+    RIGHT: 'horizontal',
+    UP: 'vertical',
+    DOWN: 'vertical'
 }
-direction_keys = {'a': LEFT, 
-                  'w': UP,
-                  'd': RIGHT,
-                  's': DOWN}
+
+direction_keys = {
+    'a': LEFT,
+    'd': RIGHT,
+    'w': UP,
+    's': DOWN
+}
 
 class Sprite(Widget):
     coord = kp.ListProperty([0, 0])
@@ -54,7 +59,7 @@ class HungryWorm(App):
 
     head = kp.ListProperty([0, 0])
     worm = kp.ListProperty()
-    lenght = kp.NumericProperty(LENGHT)
+    length = kp.NumericProperty(LENGTH)
 
     apple = kp.ListProperty([0, 0])
     apple_sprite = kp.ObjectProperty(Apple)
@@ -70,6 +75,7 @@ class HungryWorm(App):
         self._keyboard.bind(on_key_down=self._on_key_down)
         Window.bind(on_touch_down=self._on_touch_down)
         Window.bind(on_touch_move=self._on_touch_move)
+        
         self.apple_sprite = Apple()
         self.apple = self.new_apple_location
         self.head = self.new_head_location
@@ -111,10 +117,10 @@ class HungryWorm(App):
                 self.direction = new_direction
                 self.block_input = True
 
-    def on_head(self,*args):
-        self.worm = self.worm[-self.lenght:] + [self.head]
+    def on_head(self, *args):
+        self.worm = self.worm[-self.length:] + [self.head]
 
-    def on_worm(self,*args):
+    def on_worm(self, *args):
         for index, coord in enumerate(self.worm):
             sprite = SPRITES[index]
             sprite.coord = coord
@@ -134,17 +140,21 @@ class HungryWorm(App):
 
     def move(self, *args):
         self.block_input = False
+
         new_head = [sum(x) for x in zip(
             self.head, direction_values[self.direction])]
+
         if not self.check_in_bounds(new_head) or new_head in self.worm:
             return self.die()
-        self.head = new_head
+
         if new_head == self.apple:
-            self.lenght += 1
+            self.length += 1
             self.apple = self.new_apple_location
+
         if self.buffer_direction:
             self.try_change_direction(self.buffer_direction)
             self.buffer_direction = ''
+
         self.head = new_head
     
     def check_in_bounds(self, pos):
@@ -153,13 +163,12 @@ class HungryWorm(App):
     def die(self):
         self.root.clear_widgets()
         self.alpha = ALPHA
-        Animation(alpha=0, duration = MOVESPEED).start(self)
+        Animation(alpha=0, duration=MOVESPEED).start(self)
 
         self.worm.clear()
-        self.lenght = LENGHT
+        self.length = LENGTH
         self.apple = self.new_apple_location
         self.head = self.new_head_location
-
 
 if __name__ == '__main__':
     HungryWorm().run()
