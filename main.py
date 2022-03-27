@@ -94,17 +94,14 @@ class HungryWorm(App):
         self._touch_point = [touch.x, touch.y]
 
     def _on_touch_move(self, widget, touch):
-        try:
-            if touch.x <= self._touch_point[0] - 50:
-                self.try_change_direction(LEFT)
-            elif touch.x >= self._touch_point[0] + 50:
-                self.try_change_direction(RIGHT)
-            elif touch.y >= self._touch_point[1] + 50:
-                self.try_change_direction(UP)
-            elif touch.y <= self._touch_point[1] - 50:
-                self.try_change_direction(DOWN)
-        except KeyError:
-            pass
+        if touch.x <= self._touch_point[0] - 50:
+            self.try_change_direction(LEFT)
+        elif touch.x >= self._touch_point[0] + 50:
+            self.try_change_direction(RIGHT)
+        elif touch.y >= self._touch_point[1] + 50:
+            self.try_change_direction(UP)
+        elif touch.y <= self._touch_point[1] - 50:
+            self.try_change_direction(DOWN)
 
     def try_change_direction(self, new_direction):
         if direction_group[new_direction] != direction_group[self.direction]:
