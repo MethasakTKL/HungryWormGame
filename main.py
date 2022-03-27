@@ -7,6 +7,7 @@ from kivy.uix.widget import Widget
 from collections import defaultdict
 from kivy.animation import Animation
 from random import randint
+from kivy.core.audio import SoundLoader
 
 # set size of window
 SPRITE_SIZE = sp(25)
@@ -75,6 +76,9 @@ class HungryWorm(App):
         self._keyboard.bind(on_key_down=self._on_key_down)
         Window.bind(on_touch_down=self._on_touch_down)
         Window.bind(on_touch_move=self._on_touch_move)
+
+        self._die_sound = SoundLoader.load('sounds/die.wav')
+        self._eat_sound = SoundLoader.load('sounds/eat.wav')
         
         self.apple_sprite = Apple()
         self.apple = self.new_apple_location
@@ -150,6 +154,7 @@ class HungryWorm(App):
         if new_head == self.apple:
             self.length += 1
             self.apple = self.new_apple_location
+            self._eat_sound.play()
 
         if self.buffer_direction:
             self.try_change_direction(self.buffer_direction)
@@ -164,6 +169,7 @@ class HungryWorm(App):
         self.root.clear_widgets()
         self.alpha = ALPHA
         Animation(alpha=0, duration=MOVESPEED).start(self)
+        self._die_sound.play()
 
         self.worm.clear()
         self.length = LENGTH
