@@ -159,14 +159,6 @@ class HungryWorm(App):
     def _on_key_down(self, keyboard, keycode, text, modifiers):
         try:
             self.try_change_direction(direction_keys[text])
-            if text == "w":
-                self.image_source = "images/Headup.png"
-            if text == "a":
-                self.image_source = "images/Headleft.png"
-            if text == "s":
-                self.image_source = "images/Headdown.png"
-            if text == "d":
-                self.image_source = "images/Headright.png"
         except KeyError:
             pass
 
@@ -176,16 +168,12 @@ class HungryWorm(App):
     def _on_touch_move(self, widget, touch):
         if touch.x <= self._touch_point[0] - 50:
             self.try_change_direction(LEFT)
-            self.image_source = "images/Headleft.png"
         elif touch.x >= self._touch_point[0] + 50:
             self.try_change_direction(RIGHT)
-            self.image_source = "images/Headright.png"
         elif touch.y >= self._touch_point[1] + 50:
             self.try_change_direction(UP)
-            self.image_source = "images/Headup.png"
         elif touch.y <= self._touch_point[1] - 50:
             self.try_change_direction(DOWN)
-            self.image_source = "images/Headdown.png"
 
     # Change Worm Movement Direction
     def try_change_direction(self, new_direction):
@@ -195,9 +183,16 @@ class HungryWorm(App):
             else:
                 self.direction = new_direction
                 self.block_input = True
-
-
-
+            
+            # Change direction of head graphic
+            if new_direction == LEFT:
+                self.image_source = "images/Headleft.png"
+            elif new_direction == RIGHT:
+                self.image_source = "images/Headright.png"
+            elif new_direction == UP:
+                self.image_source = "images/Headup.png"
+            elif new_direction == DOWN:
+                self.image_source = "images/Headdown.png"
 
     # Function spawn Head in Random position
     @property
