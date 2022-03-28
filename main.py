@@ -113,6 +113,7 @@ class HungryWorm(App):
         self.playtime_sound = SoundLoader.load("sounds/Playtime.wav")
         self.die_sound = SoundLoader.load('sounds/die.wav')
         self.eat_sound = SoundLoader.load('sounds/eat.wav')
+        self.playtime_sound.loop = True
         
         self.apple_sprite = Apple()
         self.head_sprite = WormHead()
