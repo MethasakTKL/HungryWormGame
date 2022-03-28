@@ -1,29 +1,46 @@
 from kivy.app import App
+from kivy import properties as kp
+from kivy.clock import Clock
 from kivy.metrics import sp
 from kivy.core.window import Window
-from kivy.clock import Clock
-from kivy import properties as kp
 from kivy.uix.widget import Widget
-from collections import defaultdict
 from kivy.animation import Animation
-from random import randint
 from kivy.core.audio import SoundLoader
+from collections import defaultdict
+from random import randint
 
-# set size of window
+''' 
+Code Understanding
+
+head: worm's head position 
+body: worm's body position
+head_sprite: graphic of the head
+ิbody_sprite: graphic of the body
+
+- We keep position in this in list size 2 and change to coordinate x-axis and y-axis [0, 0]
+- We get a value of position and change it in to graphic "sprite"
+
+Explain Graphic Algorithm 
+-- When get variable [x, y] -->  Display variables on screen at position [x, y].
+
+'''
+
 SPRITE_SIZE = sp(25)
 COLS = int(Window.width / SPRITE_SIZE)
 ROWS = int(Window.height / SPRITE_SIZE)
 
-# set worm length and speed
-LENGTH = 2
-MOVESPEED = .1
-ALPHA = .5
+# GAME Default Setting 
+DEFAULT_LENGHT = 2    # Starting Worm Lenght
+MOVESPEED = .15       # Game Speed
 
+
+ALPHA = .5
 # set direction
 LEFT = 'left'
 RIGHT = 'right'
 UP = 'up'
 DOWN = 'down'
+
 
 direction_values = {
     LEFT: [-1, 0],
@@ -46,37 +63,45 @@ direction_keys = {
     's': DOWN
 }
 
+SPRITES = defaultdict(lambda: WormBody())
+
 class Sprite(Widget):
     coord = kp.ListProperty([0, 0])
     bgcolor = kp.ListProperty([0, 0, 0, 0])
 
+
 class WormHead(Sprite):
     pass
+
 
 class WormBody(Sprite):
     pass
 
-SPRITES = defaultdict(lambda: WormBody())
 
 class Apple(Sprite):
     pass
 
+
 class HungryWorm(App):
+    # Worm Section
     sprize_size = kp.NumericProperty(SPRITE_SIZE)
-
     head = kp.ListProperty([0, 0])
-    worm = kp.ListProperty()
-    length = kp.NumericProperty(LENGTH)
+    body = kp.ListProperty()
+    lenght = kp.NumericProperty(DEFAULT_LENGHT)
 
+
+    # Apple Section
     apple = kp.ListProperty([0, 0])
     apple_sprite = kp.ObjectProperty(Apple)
 
+    # Direction Section
     direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN))
     buffer_direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN, ''))
     block_input = kp.BooleanProperty(False)
 
     alpha = kp.NumericProperty(0)
 
+    # When the app start
     def on_start(self):
         self._keyboard = Window.request_keyboard(self._on_keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_key_down)
@@ -87,15 +112,22 @@ class HungryWorm(App):
         self._eat_sound = SoundLoader.load('sounds/eat.wav')
         
         self.apple_sprite = Apple()
-        self.apple = self.new_apple_location
-        self.head = self.new_head_location
-        Clock.schedule_interval(self.move, MOVESPEED)
+        self.apple = self.new_apple_location # spawn apple
+        self.head = self.new_head_location # spawn worm
+        Clock.schedule_interval(self.move, MOVESPEED) # setting fps in game
 
+
+
+
+    # Setting Apple when start
     def on_apple(self, *args):
         self.apple_sprite.coord = self.apple
         if not self.apple_sprite.parent:
+            print("Spawn Apple")
             self.root.add_widget(self.apple_sprite)
 
+
+    # Control with Keyboard Section
     def _on_keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_key_down)
         self._keyboard = None
@@ -119,6 +151,7 @@ class HungryWorm(App):
         elif touch.y <= self._touch_point[1] - 50:
             self.try_change_direction(DOWN)
 
+    # Change Worm Movement Direction
     def try_change_direction(self, new_direction):
         if direction_group[new_direction] != direction_group[self.direction]:
             if self.block_input:
@@ -127,38 +160,50 @@ class HungryWorm(App):
                 self.direction = new_direction
                 self.block_input = True
 
-    def on_head(self, *args):
-        self.worm = self.worm[-self.length:] + [self.head]
 
-    def on_worm(self, *args):
-        for index, coord in enumerate(self.worm):
+    # Head Position 
+    def on_head(self, *args):
+        self.body = self.body[-self.lenght:] + [self.head]
+
+
+    # Body Position
+    def on_body(self, *args):
+        for index, coord in enumerate(self.body):
             sprite = SPRITES[index]
             sprite.coord = coord
             if not sprite.parent:
                 self.root.add_widget(sprite)
 
+
+    # Function spawn Head in Random position
     @property
     def new_head_location(self):
         return [randint(2, dim - 2) for dim in [COLS, ROWS]]
 
+
+    # Fucntion spawn Apple in Random position
     @property
     def new_apple_location(self):
         while True:
-            apple = [randint(1, dim - 1) for dim in [COLS, ROWS]]
-            if apple not in self.worm and apple != self.apple:
-                return apple
+            new_apple = [randint(1, dim - 1) for dim in [COLS, ROWS]]
+            if new_apple not in self.body and new_apple != self.apple:
+                return new_apple
 
+
+    # Function Move for worm
     def move(self, *args):
         self.block_input = False
 
         new_head = [sum(x) for x in zip(
             self.head, direction_values[self.direction])]
 
-        if not self.check_in_bounds(new_head) or new_head in self.worm:
+        # Check postion worm if [ In bounds ] or [ Collide itself ] --> Die
+        if not self.check_in_bounds(new_head) or new_head in self.body:
             return self.die()
 
+        # If Head's position on Apple's position --> +1 Lenght
         if new_head == self.apple:
-            self.length += 1
+            self.lenght += 1
             self.apple = self.new_apple_location
             self._eat_sound.play()
 
@@ -168,19 +213,23 @@ class HungryWorm(App):
 
         self.head = new_head
     
+    # Function check worm out of screen --> Die
     def check_in_bounds(self, pos):
         return all(0 <= pos[x] < dim for x, dim in enumerate([COLS, ROWS]))
     
+
+    # Function Die --> reset lenght, body, apple and Spawn Snake in new position
     def die(self):
         self.root.clear_widgets()
         self.alpha = ALPHA
         Animation(alpha=0, duration=MOVESPEED).start(self)
         self._die_sound.play()
 
-        self.worm.clear()
-        self.length = LENGTH
+        self.body.clear()
+        self.lenght = DEFAULT_LENGHT
         self.apple = self.new_apple_location
         self.head = self.new_head_location
+
 
 if __name__ == '__main__':
     HungryWorm().run()
