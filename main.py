@@ -50,7 +50,13 @@ class Sprite(Widget):
     coord = kp.ListProperty([0, 0])
     bgcolor = kp.ListProperty([0, 0, 0, 0])
 
-SPRITES = defaultdict(lambda: Sprite())
+class WormHead(Sprite):
+    pass
+
+class WormBody(Sprite):
+    pass
+
+SPRITES = defaultdict(lambda: WormBody())
 
 class Apple(Sprite):
     pass
