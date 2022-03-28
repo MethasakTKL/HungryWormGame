@@ -102,19 +102,18 @@ class HungryWorm(App):
     # When the app start
     def on_start(self):
         
-
         # Initialize game input
         self._keyboard = Window.request_keyboard(self._on_keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_key_down)
         Window.bind(on_touch_down=self._on_touch_down)
         Window.bind(on_touch_move=self._on_touch_move)
 
-        # Load sound files
+        # Load sounds
         self.playtime_sound = SoundLoader.load("sounds/Backsound.wav")
         self.die_sound = SoundLoader.load('sounds/die.wav')
         self.eat_sound = SoundLoader.load('sounds/eat.wav')
-        self.playtime_sound.play()
         self.playtime_sound.loop = True
+        self.playtime_sound.play()
         
         self.apple_sprite = Apple()
         self.head_sprite = WormHead()
