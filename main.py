@@ -29,18 +29,16 @@ SPRITE_SIZE = sp(25)
 COLS = int(Window.width / SPRITE_SIZE)
 ROWS = int(Window.height / SPRITE_SIZE)
 
-# GAME Default Setting 
+# GAME Default Settings
 DEFAULT_LENGHT = 2    # Starting Worm Lenght
 MOVESPEED = .15       # Game Speed
-
-
 ALPHA = .5
-# set direction
+
+# set directions
 LEFT = 'left'
 RIGHT = 'right'
 UP = 'up'
 DOWN = 'down'
-
 
 direction_values = {
     LEFT: [-1, 0],
@@ -63,15 +61,11 @@ direction_keys = {
     's': DOWN
 }
 
-SPRITES = defaultdict(lambda: Sprite())
-
-
-
-
 class Sprite(Widget):
     coord = kp.ListProperty([0, 0])
     bgcolor = kp.ListProperty([0, 0, 0, 0])
 
+SPRITES = defaultdict(lambda: Sprite())
 
 class WormHead(Widget):
     coord = kp.ListProperty([0, 0])
@@ -81,9 +75,9 @@ class Apple(Widget):
     coord = kp.ListProperty([0, 0])
     bgcolor = kp.ListProperty([0, 0, 0, 0])
 
-
 class HungryWorm(App):
     image_source = kp.StringProperty("images/Headup.png")
+
     # Worm Section
     sprize_size = kp.NumericProperty(SPRITE_SIZE)
     
@@ -92,7 +86,6 @@ class HungryWorm(App):
 
     body = kp.ListProperty()
     lenght = kp.NumericProperty(DEFAULT_LENGHT)
-
 
     # Apple Section
     apple = kp.ListProperty([0, 0])
@@ -107,27 +100,28 @@ class HungryWorm(App):
 
     # When the app start
     def on_start(self):
+
+        # Initialize game input
         self._keyboard = Window.request_keyboard(self._on_keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_key_down)
         Window.bind(on_touch_down=self._on_touch_down)
         Window.bind(on_touch_move=self._on_touch_move)
 
-        self._die_sound = SoundLoader.load('sounds/die.wav')
-        self._eat_sound = SoundLoader.load('sounds/eat.wav')
+        # Load sound files
+        self.playtime_sound = SoundLoader.load("sounds/Playtime.wav")
+        self.die_sound = SoundLoader.load('sounds/die.wav')
+        self.eat_sound = SoundLoader.load('sounds/eat.wav')
         
         self.apple_sprite = Apple()
         self.head_sprite = WormHead()
         self.apple = self.new_apple_location # spawn apple
         self.head = self.new_head_location # spawn worm
         Clock.schedule_interval(self.move, MOVESPEED) # setting fps in game
-        self.sound = SoundLoader.load("sounds/Playtime.wav")
-        self.sound.play()
-
+        self.playtime_sound.play()
 
     # Head Position 
     def on_head(self, *args):
         self.body = self.body[-self.lenght:] + [self.head]
-
 
     # Body Position
     def on_body(self, *args):
@@ -144,7 +138,6 @@ class HungryWorm(App):
                 if not sprite.parent:
                     self.root.add_widget(sprite)
 
-
     # Setting Apple when start
     def on_apple(self, *args):
         self.apple_sprite.coord = self.apple
@@ -152,21 +145,23 @@ class HungryWorm(App):
             print("Spawn Apple")
             self.root.add_widget(self.apple_sprite)
 
-
-    # Control with Keyboard Section
+    # Needed by Window.request_keyboard
     def _on_keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_key_down)
         self._keyboard = None
 
+    # Keyboard input handler
     def _on_key_down(self, keyboard, keycode, text, modifiers):
         try:
             self.try_change_direction(direction_keys[text])
         except KeyError:
             pass
 
+    # Touchscreen input handler
     def _on_touch_down(self, widget, touch):
         self._touch_point = [touch.x, touch.y]
 
+    # Touchscreen input handler
     def _on_touch_move(self, widget, touch):
         if touch.x <= self._touch_point[0] - 50:
             self.try_change_direction(LEFT)
@@ -201,7 +196,6 @@ class HungryWorm(App):
     def new_head_location(self):
         return [randint(2, dim - 2) for dim in [COLS, ROWS]]
 
-
     # Fucntion spawn Apple in Random position
     @property
     def new_apple_location(self):
@@ -209,7 +203,6 @@ class HungryWorm(App):
             new_apple = [randint(1, dim - 1) for dim in [COLS, ROWS]]
             if new_apple not in self.body and new_apple != self.apple:
                 return new_apple
-
 
     # Function Move for worm
     def move(self, *args):
@@ -226,7 +219,7 @@ class HungryWorm(App):
         if new_head == self.apple:
             self.lenght += 1
             self.apple = self.new_apple_location
-            self._eat_sound.play()
+            self.eat_sound.play()
 
         if self.buffer_direction:
             self.try_change_direction(self.buffer_direction)
@@ -238,19 +231,17 @@ class HungryWorm(App):
     def check_in_bounds(self, pos):
         return all(0 <= pos[x] < dim for x, dim in enumerate([COLS, ROWS]))
     
-
     # Function Die --> reset lenght, body, apple and Spawn Snake in new position
     def die(self):
         self.root.clear_widgets()
         self.alpha = ALPHA
         Animation(alpha=0, duration=MOVESPEED).start(self)
-        self._die_sound.play()
+        self.die_sound.play()
 
         self.body.clear()
         self.lenght = DEFAULT_LENGHT
         self.apple = self.new_apple_location
         self.head = self.new_head_location
-
 
 if __name__ == '__main__':
     HungryWorm().run()
