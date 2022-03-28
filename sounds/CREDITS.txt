@@ -3,9 +3,9 @@ The original file is made by Alexander Nakarada <https://www.chosic.com/download
 This file is licensed under the Creative Commons CC BY 4.0 License.
 
 die.wav
-The original file is made by jeremysykes <https://freesound.org/people/jeremysykes/>
+The original file is made by jeremysykes <https://freesound.org/people/jeremysykes/sounds/341252/>
 This file is licensed under the Creative Commons 0 License.
 
 eat.wav
-The original file is made by jeremysykes <https://freesound.org/people/jeremysykes/>
+The original file is made by jeremysykes <https://freesound.org/people/jeremysykes/sounds/344519/>
 This file is licensed under the Creative Commons 0 License.
