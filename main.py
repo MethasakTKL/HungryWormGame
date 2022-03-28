@@ -109,7 +109,7 @@ class HungryWorm(App):
         Window.bind(on_touch_move=self._on_touch_move)
 
         # Load sounds
-        self.playtime_sound = SoundLoader.load("sounds/Backsound.wav")
+        self.playtime_sound = SoundLoader.load("sounds/Backsound.mp3")
         self.die_sound = SoundLoader.load('sounds/die.wav')
         self.eat_sound = SoundLoader.load('sounds/eat.wav')
         self.playtime_sound.loop = True

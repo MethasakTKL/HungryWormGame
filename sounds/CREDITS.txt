@@ -1,4 +1,4 @@
-Backsound.wav (Silly intro)
+Backsound.mp3 (Silly intro)
 The original file is made by Alexander Nakarada <https://www.chosic.com/download-audio/27131/>
 This file is licensed under the Creative Commons CC BY 4.0 License.
 
