@@ -66,6 +66,8 @@ direction_keys = {
 SPRITES = defaultdict(lambda: Sprite())
 
 
+
+
 class Sprite(Widget):
     coord = kp.ListProperty([0, 0])
     bgcolor = kp.ListProperty([0, 0, 0, 0])
@@ -75,13 +77,13 @@ class WormHead(Widget):
     coord = kp.ListProperty([0, 0])
     bgcolor = kp.ListProperty([0, 0, 0, 0])
 
-
 class Apple(Widget):
     coord = kp.ListProperty([0, 0])
     bgcolor = kp.ListProperty([0, 0, 0, 0])
 
 
 class HungryWorm(App):
+    image_source = kp.StringProperty("images/Headup.png")
     # Worm Section
     sprize_size = kp.NumericProperty(SPRITE_SIZE)
     
@@ -130,9 +132,10 @@ class HungryWorm(App):
         for index, coord in enumerate(self.body):
             if coord == self.head:
                 self.head_sprite.coord = coord
+
                 if not self.head_sprite.parent:
                     self.root.add_widget(self.head_sprite)
-            
+
             else:
                 sprite = SPRITES[index]
                 sprite.coord = coord
@@ -156,6 +159,14 @@ class HungryWorm(App):
     def _on_key_down(self, keyboard, keycode, text, modifiers):
         try:
             self.try_change_direction(direction_keys[text])
+            if text == "w":
+                self.image_source = "images/Headup.png"
+            if text == "a":
+                self.image_source = "images/Headleft.png"
+            if text == "s":
+                self.image_source = "images/Headdown.png"
+            if text == "d":
+                self.image_source = "images/Headright.png"
         except KeyError:
             pass
 
