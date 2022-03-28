@@ -31,7 +31,7 @@ ROWS = int(Window.height / SPRITE_SIZE)
 
 # GAME Default Setting 
 DEFAULT_LENGHT = 2    # Starting Worm Lenght
-MOVESPEED = .15       # Game Speed
+MOVESPEED = .5       # Game Speed
 
 
 ALPHA = .5
@@ -63,29 +63,31 @@ direction_keys = {
     's': DOWN
 }
 
-SPRITES = defaultdict(lambda: WormBody())
+SPRITES = defaultdict(lambda: Sprite())
+
 
 class Sprite(Widget):
     coord = kp.ListProperty([0, 0])
     bgcolor = kp.ListProperty([0, 0, 0, 0])
 
 
-class WormHead(Sprite):
-    pass
+class WormHead(Widget):
+    coord = kp.ListProperty([0, 0])
+    bgcolor = kp.ListProperty([0, 0, 0, 0])
 
 
-class WormBody(Sprite):
-    pass
-
-
-class Apple(Sprite):
-    pass
+class Apple(Widget):
+    coord = kp.ListProperty([0, 0])
+    bgcolor = kp.ListProperty([0, 0, 0, 0])
 
 
 class HungryWorm(App):
     # Worm Section
     sprize_size = kp.NumericProperty(SPRITE_SIZE)
+    
     head = kp.ListProperty([0, 0])
+    head_sprite = kp.ObjectProperty(WormHead)
+
     body = kp.ListProperty()
     lenght = kp.NumericProperty(DEFAULT_LENGHT)
 
@@ -112,6 +114,7 @@ class HungryWorm(App):
         self._eat_sound = SoundLoader.load('sounds/eat.wav')
         
         self.apple_sprite = Apple()
+        self.head_sprite = WormHead()
         self.apple = self.new_apple_location # spawn apple
         self.head = self.new_head_location # spawn worm
         Clock.schedule_interval(self.move, MOVESPEED) # setting fps in game
@@ -124,11 +127,26 @@ class HungryWorm(App):
 
     # Body Position
     def on_body(self, *args):
+        print("Head", self.head)
+        print("Body", self.body)
+
         for index, coord in enumerate(self.body):
+            print("index", index, "coord", coord)
+
+
+            if coord == self.head:
+                print("show head")
+                print(self.head_sprite.coord)
+                self.head_sprite.coord = coord
+                if not self.head_sprite.parent:
+                    print("DISPLAY HEAD")
+                    self.root.add_widget(self.head_sprite)
+            
             sprite = SPRITES[index]
-            sprite.coord = coord
-            if not sprite.parent:
-                self.root.add_widget(sprite)
+            if coord != self.head:
+                sprite.coord = coord
+                if not sprite.parent:
+                    self.root.add_widget(sprite)
 
 
     # Setting Apple when start

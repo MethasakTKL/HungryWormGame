@@ -11,23 +11,29 @@
         Rectangle
             pos: self.pos
             size: self.size
+            source: "images/BodyNew.png"
 
 <WormHead>
+    bgcolor: 1, 1, 1, 1
+    size_hint: None, None
+    size: [app.sprize_size] * 2
+    pos: [x * app.sprize_size for x in self.coord]
     canvas:
+        Color
+            rgba:self.bgcolor
         Rectangle
             pos: self.pos
             size: self.size
             source: "images/Head.png"
 
-<WormBody>
-    canvas:
-        Rectangle
-            pos: self.pos
-            size: self.size
-            source: "images/BodyNew.png"
-
 <Apple>
+    bgcolor: 1, 1, 1, 1
+    size_hint: None, None
+    size: [app.sprize_size] * 2
+    pos: [x * app.sprize_size for x in self.coord]
     canvas:
+        Color
+            rgba:self.bgcolor
         Rectangle
             pos: self.pos
             size: self.size
