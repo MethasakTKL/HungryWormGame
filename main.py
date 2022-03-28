@@ -117,6 +117,18 @@ class HungryWorm(App):
         Clock.schedule_interval(self.move, MOVESPEED) # setting fps in game
 
 
+    # Head Position 
+    def on_head(self, *args):
+        self.body = self.body[-self.lenght:] + [self.head]
+
+
+    # Body Position
+    def on_body(self, *args):
+        for index, coord in enumerate(self.body):
+            sprite = SPRITES[index]
+            sprite.coord = coord
+            if not sprite.parent:
+                self.root.add_widget(sprite)
 
 
     # Setting Apple when start
@@ -161,18 +173,6 @@ class HungryWorm(App):
                 self.block_input = True
 
 
-    # Head Position 
-    def on_head(self, *args):
-        self.body = self.body[-self.lenght:] + [self.head]
-
-
-    # Body Position
-    def on_body(self, *args):
-        for index, coord in enumerate(self.body):
-            sprite = SPRITES[index]
-            sprite.coord = coord
-            if not sprite.parent:
-                self.root.add_widget(sprite)
 
 
     # Function spawn Head in Random position
