@@ -176,12 +176,16 @@ class HungryWorm(App):
     def _on_touch_move(self, widget, touch):
         if touch.x <= self._touch_point[0] - 50:
             self.try_change_direction(LEFT)
+            self.image_source = "images/Headleft.png"
         elif touch.x >= self._touch_point[0] + 50:
             self.try_change_direction(RIGHT)
+            self.image_source = "images/Headright.png"
         elif touch.y >= self._touch_point[1] + 50:
             self.try_change_direction(UP)
+            self.image_source = "images/Headup.png"
         elif touch.y <= self._touch_point[1] - 50:
             self.try_change_direction(DOWN)
+            self.image_source = "images/Headdown.png"
 
     # Change Worm Movement Direction
     def try_change_direction(self, new_direction):
