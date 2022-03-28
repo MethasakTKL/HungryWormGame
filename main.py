@@ -31,7 +31,7 @@ ROWS = int(Window.height / SPRITE_SIZE)
 
 # GAME Default Setting 
 DEFAULT_LENGHT = 2    # Starting Worm Lenght
-MOVESPEED = .5       # Game Speed
+MOVESPEED = .15       # Game Speed
 
 
 ALPHA = .5
@@ -127,23 +127,14 @@ class HungryWorm(App):
 
     # Body Position
     def on_body(self, *args):
-        print("Head", self.head)
-        print("Body", self.body)
-
         for index, coord in enumerate(self.body):
-            print("index", index, "coord", coord)
-
-
             if coord == self.head:
-                print("show head")
-                print(self.head_sprite.coord)
                 self.head_sprite.coord = coord
                 if not self.head_sprite.parent:
-                    print("DISPLAY HEAD")
                     self.root.add_widget(self.head_sprite)
             
-            sprite = SPRITES[index]
-            if coord != self.head:
+            else:
+                sprite = SPRITES[index]
                 sprite.coord = coord
                 if not sprite.parent:
                     self.root.add_widget(sprite)
