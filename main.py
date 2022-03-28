@@ -120,6 +120,8 @@ class HungryWorm(App):
         self.apple = self.new_apple_location # spawn apple
         self.head = self.new_head_location # spawn worm
         Clock.schedule_interval(self.move, MOVESPEED) # setting fps in game
+        self.sound = SoundLoader.load("sounds/Playtime.wav")
+        self.sound.play()
 
 
     # Head Position 
