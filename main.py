@@ -110,9 +110,10 @@ class HungryWorm(App):
         Window.bind(on_touch_move=self._on_touch_move)
 
         # Load sound files
-        self.playtime_sound = SoundLoader.load("sounds/Playtime.wav")
+        self.playtime_sound = SoundLoader.load("sounds/Backsound.wav")
         self.die_sound = SoundLoader.load('sounds/die.wav')
         self.eat_sound = SoundLoader.load('sounds/eat.wav')
+        self.playtime_sound.play()
         self.playtime_sound.loop = True
         
         self.apple_sprite = Apple()
@@ -120,8 +121,6 @@ class HungryWorm(App):
         self.apple = self.new_apple_location # spawn apple
         self.head = self.new_head_location # spawn worm
         Clock.schedule_interval(self.move, MOVESPEED) # setting fps in game
-        self.sound = SoundLoader.load("sounds/Backsound.wav")
-        self.sound.play()
 
     # Head Position 
     def on_head(self, *args):
