@@ -76,6 +76,7 @@ class Apple(Widget):
     bgcolor = kp.ListProperty([0, 0, 0, 0])
 
 class HungryWorm(App):
+    icon = './images/Logo.png'
     image_source = kp.StringProperty("images/Headup.png")
 
     # Worm Section
@@ -100,6 +101,7 @@ class HungryWorm(App):
 
     # When the app start
     def on_start(self):
+        
 
         # Initialize game input
         self._keyboard = Window.request_keyboard(self._on_keyboard_closed, self)
@@ -117,7 +119,8 @@ class HungryWorm(App):
         self.apple = self.new_apple_location # spawn apple
         self.head = self.new_head_location # spawn worm
         Clock.schedule_interval(self.move, MOVESPEED) # setting fps in game
-        self.playtime_sound.play()
+        self.sound = SoundLoader.load("sounds/Backsound.wav")
+        self.sound.play()
 
     # Head Position 
     def on_head(self, *args):
