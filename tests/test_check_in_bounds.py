@@ -51,4 +51,4 @@ class CheckInBoundTest(unittest.TestCase):
         position = [9, 1]
         result = self.check_in_bounds(position)
 
-        self.assertFalse(result)
+        self.assertTrue(result)
