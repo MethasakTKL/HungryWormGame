@@ -25,7 +25,7 @@ class MoveTest(unittest.TestCase):
 
         if not all(0 <= new_pos[x] < d for x, d in enumerate([COLS, ROWS])):
             return False
-            
+
         if new_pos in self.body:
             return False
 
@@ -44,7 +44,6 @@ class MoveTest(unittest.TestCase):
         self.do_move()
 
         self.assertEqual(self.head, [5, 6])
-
 
     def test_move_down_3_times(self):
         self.head = [5, 5]

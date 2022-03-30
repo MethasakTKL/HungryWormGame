@@ -12,8 +12,8 @@ class OnHeadTest(unittest.TestCase):
     def do_on_head(self, *args):
         self.body = self.body[-self.lenght :] + [self.head]
 
-    def test_do_on_head_check_index_2(self):
-        self.lenght
+    def test_do_on_head_check_index_1(self):
+        self.lenght = 3
         self.head = [5, 5]  # Moving up
         self.do_on_head()  # Move body follow head
         self.head = [5, 6]  # Moving up
@@ -26,3 +26,4 @@ class OnHeadTest(unittest.TestCase):
         except_result = [5, 6]
 
         self.assertEqual(result, except_result)
+
