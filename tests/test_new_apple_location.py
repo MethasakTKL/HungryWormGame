@@ -5,6 +5,8 @@ class NewAppleLocationTest(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super(NewAppleLocationTest, self).__init__(*args, **kwargs)
         self.apple = []
+        self.body = []
+
 
     # Unittest Section
     def do_new_apple_location(self):
@@ -19,7 +21,14 @@ class NewAppleLocationTest(unittest.TestCase):
                 return
 
     def test_new_apple_location(self):
-        self.body = [5, 5]
+        self.do_new_apple_location()
+        apple1 = self.apple
+        self.do_new_apple_location()
+        apple2 = self.apple
+
+        self.assertNotEqual(apple1, apple2)
+
+    def test_new_apple_location(self):
         self.do_new_apple_location()
         apple1 = self.apple
         self.do_new_apple_location()
