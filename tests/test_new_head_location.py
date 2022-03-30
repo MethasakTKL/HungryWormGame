@@ -14,7 +14,7 @@ class NewHeadLocationTest(unittest.TestCase):
         return new_head
 
     def test_new_head_location(self):
-        head1 = self.do_new_head_location()
-        head2 = self.do_new_head_location()
+        head0 = [0, 0]  # Default Value of head pos in game
+        head1 = self.do_new_head_location()  # Starting random head pos
 
-        self.assertIsNot(head1, head2)
+        self.assertNotEqual(head0, head1)
