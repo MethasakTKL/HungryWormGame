@@ -41,7 +41,7 @@ UP = "up"
 DOWN = "down"
 
 direction_values = {LEFT: [-1, 0], RIGHT: [1, 0], UP: [0, 1], DOWN: [0, -1]}
-
+ 
 direction_group = {
     LEFT: "horizontal",
     RIGHT: "horizontal",
@@ -61,6 +61,7 @@ class Sprite(Widget):
 class WormBody(Sprite):
     pass
 
+
 BODY_SPRITE = defaultdict(lambda: WormBody())
 
 
@@ -70,6 +71,7 @@ class WormHead(Sprite):
 
 class Apple(Sprite):
     pass
+
 
 class HungryWormGame(Widget):
     # Worm Section
@@ -113,15 +115,18 @@ class HungryWormGame(Widget):
 
         self.apple_sprite = Apple()
         self.head_sprite = WormHead()
-        self.apple = self.new_apple_location  # spawn apple
-        self.head = self.new_head_location  # spawn worm
+
         self.score = 0  # set score to 0s
-        Clock.schedule_interval(self.move, MOVESPEED)  # setting fps in game
 
     # Required for Window.request_keyboard
     def _on_keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_key_down)
         self._keyboard = None
+
+    def start_game(self):
+        self.apple = self.new_apple_location  # spawn apple
+        self.head = self.new_head_location  # spawn worm
+        Clock.schedule_interval(self.move, MOVESPEED)  # setting fps in game
 
     # Keyboard input handler
     def _on_key_down(self, keyboard, keycode, text, modifiers):

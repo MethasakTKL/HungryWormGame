@@ -64,6 +64,15 @@
         text: 'Hungry Worm'
         font_size: 24
 
+    Button:
+        text: "Press to start"
+        id: start_button
+        pos: (root.width/2, root.height / 2)
+        on_release:
+            self.disabled = True
+            self.opacity = 0
+            root.start_game()
+
     Label:
         id: score
         size_hint: None, None
