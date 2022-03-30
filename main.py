@@ -25,9 +25,9 @@ Explain Graphic Algorithm
 
 '''
 
-SPRITE_SIZE = sp(25)
-COLS = int(Window.width / SPRITE_SIZE)
-ROWS = int(Window.height / SPRITE_SIZE)
+sprite_SIZE = sp(25)
+COLS = int(Window.width / sprite_SIZE)
+ROWS = int(Window.height / sprite_SIZE)
 
 # GAME Default Settings
 DEFAULT_LENGHT = 2    # Starting Worm Lenght
@@ -61,17 +61,17 @@ direction_keys = {
     's': DOWN
 }
 
-class Sprite(Widget):
-    sprize_size = kp.NumericProperty(SPRITE_SIZE)
+class WormBody(Widget):
+    sprite_size = kp.NumericProperty(sprite_SIZE)
     coord = kp.ListProperty([0, 0])
     bgcolor = kp.ListProperty([0, 0, 0, 0])
 
-SPRITES = defaultdict(lambda: Sprite())
+BODY_SPRITE = defaultdict(lambda: WormBody())
 
-class WormHead(Sprite):
+class WormHead(WormBody):
     angle = kp.NumericProperty(0)
 
-class Apple(Sprite):
+class Apple(WormBody):
     pass
 
 class HungryWormGame(Widget):
@@ -160,10 +160,10 @@ class HungryWormGame(Widget):
                 if not self.head_sprite.parent:
                     self.add_widget(self.head_sprite)
             else:
-                sprite = SPRITES[index]
-                sprite.coord = coord
-                if not sprite.parent:
-                    self.add_widget(sprite)
+                body_sprite = BODY_SPRITE[index]
+                body_sprite.coord = coord
+                if not body_sprite.parent:
+                    self.add_widget(body_sprite)
 
     # Setting Apple when start
     def on_apple(self, *args):
@@ -239,10 +239,10 @@ class HungryWormGame(Widget):
         
         # Clear widget
         for index, coord in enumerate(self.body):
-                sprite = SPRITES[index]
-                sprite.coord = coord
-                self.remove_widget(sprite)
-        self.apple_sprite.clear_widgets()
+                body_sprite = BODY_SPRITE[index]
+                body_sprite.coord = coord
+                self.remove_widget(body_sprite)
+        self.apple_body_sprite.clear_widgets()
         self.body.clear()
 
         # Red screen effect
