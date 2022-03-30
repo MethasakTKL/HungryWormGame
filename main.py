@@ -62,26 +62,20 @@ direction_keys = {
 }
 
 class Sprite(Widget):
+    sprize_size = kp.NumericProperty(SPRITE_SIZE)
     coord = kp.ListProperty([0, 0])
     bgcolor = kp.ListProperty([0, 0, 0, 0])
 
 SPRITES = defaultdict(lambda: Sprite())
 
-class WormHead(Widget):
-    coord = kp.ListProperty([0, 0])
-    bgcolor = kp.ListProperty([0, 0, 0, 0])
-
-class Apple(Widget):
-    coord = kp.ListProperty([0, 0])
-    bgcolor = kp.ListProperty([0, 0, 0, 0])
-
-class HungryWorm(App):
-    icon = 'images/Logo.png'
+class WormHead(Sprite):
     image_source = kp.StringProperty('images/Headup.png')
 
+class Apple(Sprite):
+    pass
+
+class HungryWormGame(Widget):
     # Worm Section
-    sprize_size = kp.NumericProperty(SPRITE_SIZE)
-    
     head = kp.ListProperty([0, 0])
     head_sprite = kp.ObjectProperty(WormHead)
 
@@ -103,8 +97,9 @@ class HungryWorm(App):
     score = kp.NumericProperty(0)
 
     # When the app start
-    def on_start(self):
-        
+    def __init__(self):
+        super(HungryWormGame, self).__init__()
+
         # Initialize game input
         self._keyboard = Window.request_keyboard(self._on_keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_key_down)
@@ -125,33 +120,7 @@ class HungryWorm(App):
         self.score = 0 # set score to 0
         Clock.schedule_interval(self.move, MOVESPEED) # setting fps in game
 
-    # Head Position 
-    def on_head(self, *args):
-        self.body = self.body[-self.lenght:] + [self.head]
-
-    # Body Position
-    def on_body(self, *args):
-        for index, coord in enumerate(self.body):
-            if coord == self.head:
-                self.head_sprite.coord = coord
-
-                if not self.head_sprite.parent:
-                    self.root.add_widget(self.head_sprite)
-
-            else:
-                sprite = SPRITES[index]
-                sprite.coord = coord
-                if not sprite.parent:
-                    self.root.add_widget(sprite)
-
-    # Setting Apple when start
-    def on_apple(self, *args):
-        self.apple_sprite.coord = self.apple
-        if not self.apple_sprite.parent:
-            print('Spawn Apple')
-            self.root.add_widget(self.apple_sprite)
-
-    # Needed by Window.request_keyboard
+    # Required for Window.request_keyboard
     def _on_keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_key_down)
         self._keyboard = None
@@ -178,6 +147,31 @@ class HungryWorm(App):
         elif touch.y <= self._touch_point[1] - 50:
             self.try_change_direction(DOWN)
 
+    # Head Position 
+    def on_head(self, *args):
+        self.body = self.body[-self.lenght:] + [self.head]
+
+    # Body Position
+    def on_body(self, *args):
+        for index, coord in enumerate(self.body):
+            if coord == self.head:
+                self.head_sprite.coord = coord
+
+                if not self.head_sprite.parent:
+                    self.add_widget(self.head_sprite)
+            else:
+                sprite = SPRITES[index]
+                sprite.coord = coord
+                if not sprite.parent:
+                    self.add_widget(sprite)
+
+    # Setting Apple when start
+    def on_apple(self, *args):
+        self.apple_sprite.coord = self.apple
+        if not self.apple_sprite.parent:
+            print('Spawn Apple')
+            self.add_widget(self.apple_sprite)
+
     # Change Worm Movement Direction
     def try_change_direction(self, new_direction):
         if direction_group[new_direction] != direction_group[self.direction]:
@@ -189,13 +183,13 @@ class HungryWorm(App):
             
             # Change direction of head graphic
             if new_direction == LEFT:
-                self.image_source = 'images/Headleft.png'
+                self.head_sprite.image_source = 'images/Headleft.png'
             elif new_direction == RIGHT:
-                self.image_source = 'images/Headright.png'
+                self.head_sprite.image_source = 'images/Headright.png'
             elif new_direction == UP:
-                self.image_source = 'images/Headup.png'
+                self.head_sprite.image_source = 'images/Headup.png'
             elif new_direction == DOWN:
-                self.image_source = 'images/Headdown.png'
+                self.head_sprite.image_source = 'images/Headdown.png'
 
     # Function spawn Head in Random position
     @property
@@ -247,7 +241,7 @@ class HungryWorm(App):
         for index, coord in enumerate(self.body):
                 sprite = SPRITES[index]
                 sprite.coord = coord
-                self.root.remove_widget(sprite)
+                self.remove_widget(sprite)
         self.apple_sprite.clear_widgets()
         self.body.clear()
 
@@ -255,11 +249,17 @@ class HungryWorm(App):
         self.alpha = ALPHA
         Animation(alpha=0, duration=MOVESPEED).start(self)
 
-        # Reset value of game
+        # Reset values of the game
         self.lenght = DEFAULT_LENGHT
         self.apple = self.new_apple_location
         self.head = self.new_head_location
         self.score = 0
 
+class HungryWormApp(App):
+    icon = kp.StringProperty('images/Logo.png')
+
+    def build(self):
+        return HungryWormGame()
+
 if __name__ == '__main__':
-    HungryWorm().run()
+    HungryWormApp().run()
