@@ -41,7 +41,7 @@ UP = "up"
 DOWN = "down"
 
 direction_values = {LEFT: [-1, 0], RIGHT: [1, 0], UP: [0, 1], DOWN: [0, -1]}
- 
+
 direction_group = {
     LEFT: "horizontal",
     RIGHT: "horizontal",
@@ -124,9 +124,23 @@ class HungryWormGame(Widget):
         self._keyboard = None
 
     def start_game(self):
-        self.apple = self.new_apple_location  # spawn apple
-        self.head = self.new_head_location  # spawn worm
-        Clock.schedule_interval(self.move, MOVESPEED)  # setting fps in game
+        # Clear widget
+        for index, coord in enumerate(self.body):
+            body_sprite = BODY_SPRITE[index]
+            body_sprite.coord = coord
+            self.remove_widget(body_sprite)
+
+        self.apple_sprite.clear_widgets()
+        self.head_sprite.clear_widgets()
+        self.body.clear()
+
+        self.clock = Clock.schedule_interval(self.move, MOVESPEED)
+        
+        # Reset values of the game
+        self.lenght = DEFAULT_LENGHT
+        self.apple = self.new_apple_location
+        self.head = self.new_head_location
+        self.score = 0
 
     # Keyboard input handler
     def _on_key_down(self, keyboard, keycode, text, modifiers):
@@ -240,24 +254,15 @@ class HungryWormGame(Widget):
     def die(self):
         # Play die sound
         self.die_sound.play()
-
-        # Clear widget
-        for index, coord in enumerate(self.body):
-            body_sprite = BODY_SPRITE[index]
-            body_sprite.coord = coord
-            self.remove_widget(body_sprite)
-        self.apple_sprite.clear_widgets()
-        self.body.clear()
+        self.clock.cancel()
 
         # Red screen effect
         self.alpha = ALPHA
         Animation(alpha=0, duration=MOVESPEED).start(self)
 
-        # Reset values of the game
-        self.lenght = DEFAULT_LENGHT
-        self.apple = self.new_apple_location
-        self.head = self.new_head_location
-        self.score = 0
+        # Button Click to start
+        self.ids.start_button.disabled = False
+        self.ids.start_button.opacity = 1
 
 
 class HungryWormApp(App):
