@@ -42,11 +42,18 @@
             size: self.size
             source: "images/AppleNew.png"
 
-RelativeLayout
+RelativeLayout:
     canvas:
         Color
             rgba:1, 0, 0, app.alpha
         Rectangle
             pos: self.pos
             size: self.size
-            
+    
+
+    Label:
+        id: header
+        size_hint: None, None
+        height: 
+        text: "Hungry Worm"
+        font_size: 24
