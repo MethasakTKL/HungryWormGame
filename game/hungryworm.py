@@ -230,7 +230,6 @@ class HungryWormGame(Widget):
     def new_apple_location(self):
         while True:
             new_apple = [randint(1, dim - 1) for dim in [COLS, ROWS]]
-            print(new_apple)
             if new_apple not in self.body and new_apple != self.apple:
                 return new_apple
 
