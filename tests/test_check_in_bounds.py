@@ -40,3 +40,9 @@ class CheckInBoundTest(unittest.TestCase):
         result = self.check_in_bounds(position)
 
         self.assertTrue(result) 
+    
+    def test_in_bounds_9_10(self):
+        position = [9, 10]
+        result = self.check_in_bounds(position)
+
+        self.assertFalse(result) 
