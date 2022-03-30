@@ -17,11 +17,13 @@ class MoveTest(unittest.TestCase):
         self.head = [0, 0]
         self.body = []
         self.lenght = 0
+        self.score = 0
+        self.high_score = 0
         self.apple = []
 
     def do_move(self, *args):
         from random import randint
-        
+
         self.body = self.body[-self.lenght :] + [self.head]
         new_pos = [sum(x) for x in zip(self.head, direction_values[self.direction])]
 
@@ -38,10 +40,7 @@ class MoveTest(unittest.TestCase):
             self.score += 1
             if self.score >= self.high_score:
                 self.high_score = self.score
-            while True:
-                new_apple = [randint(1, dim - 1) for dim in [COLS, ROWS]]
-                if new_apple not in self.body and new_apple != self.apple:
-                    self.apple = new_apple
+                self.apple = [0, 0] # Reset apple to [0, 0]
 
         self.head = new_pos
 
@@ -88,13 +87,13 @@ class MoveTest(unittest.TestCase):
 
     def test_move_to_inside_body(self):
         self.head = [5, 5]
-        self.body = [[4, 5],[4, 4],[5, 4]]
+        self.body = [[4, 5], [4, 4], [5, 4]]
         self.direction = LEFT
         self.do_move()
 
         self.assertEqual(self.head, "inside body")
-    
-    def test_move_to_apple(self):
+
+    def test_move_to_apple_check_pos_apple(self):
         self.head = [5, 5]
         self.apple, old_apple = [5, 3]
         self.direction = DOWN
@@ -102,3 +101,11 @@ class MoveTest(unittest.TestCase):
         self.do_move()
 
         self.assertNotEqual(self.apple, old_apple)
+
+    def test_move_to_apple_check_lenght(self):
+        self.head = [5, 5]
+        self.apple = [5, 4]
+        self.direction = DOWN
+        self.do_move()
+
+        self.assertEqual(self.lenght, 1)
