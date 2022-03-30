@@ -95,8 +95,8 @@ class HungryWormGame(Widget):
     score = kp.NumericProperty(0)
 
     # When the app start
-    def __init__(self):
-        super(HungryWormGame, self).__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         # Initialize game input
         self._keyboard = Window.request_keyboard(self._on_keyboard_closed, self)
@@ -239,7 +239,7 @@ class HungryWormGame(Widget):
             body_sprite = BODY_SPRITE[index]
             body_sprite.coord = coord
             self.remove_widget(body_sprite)
-        self.apple_body_sprite.clear_widgets()
+        self.apple_sprite.clear_widgets()
         self.body.clear()
 
         # Red screen effect
