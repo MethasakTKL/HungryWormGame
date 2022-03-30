@@ -91,3 +91,15 @@ class OnHeadTest(unittest.TestCase):
         except_result = [1, 2]
 
         self.assertEqual(result, except_result)
+
+    def test_do_on_head_lenght_1_check_full_position(self):
+        self.lenght = 1
+        for i in range(1001):  # Move 1001 times Full Position on last is
+            self.head = [i, 1000]  # Body [999, 1000]: Head [1000, 1000]
+            self.do_on_head()
+
+        # Check Body
+        result = self.body
+        except_result = [[999, 1000], [1000, 1000]]
+
+        self.assertEqual(result, except_result)
