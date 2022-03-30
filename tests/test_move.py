@@ -80,3 +80,11 @@ class MoveTest(unittest.TestCase):
         self.do_move()
 
         self.assertEqual(self.head, "out bounds")
+
+    def test_move_to_inside_body(self):
+        self.head = [5, 5]
+        self.body = [[4, 5],[4, 4],[5, 4]]
+        self.direction = LEFT
+        self.do_move()
+
+        self.assertEqual(self.head, "inside body")
