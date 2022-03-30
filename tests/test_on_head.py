@@ -36,7 +36,26 @@ class OnHeadTest(unittest.TestCase):
         # End loop with head in position [5, 9]
         # Body:Lenght4:-->Head: [5, 5]->[5, 6]->[5, 7]->[5, 8]->[5, 9]
         # Last Body is [5, 5]
-        result = self.body[0]
+        result = self.body[0]  # Object: [body::] + [head]
         except_result = [5, 5]
+
+        self.assertEqual(result, except_result)
+
+    def test_do_on_head_zig_zag(self):
+        self.lenght = 3
+        self.head = [1, 1]  # -
+        self.do_on_head()
+        self.head = [1, 2]  # ^
+        self.do_on_head()
+        self.head = [2, 2]  # >
+        self.do_on_head()
+        self.head = [2, 3]  # ^
+        self.do_on_head()
+        self.head = [3, 3]  # >
+        self.do_on_head()
+
+        # Check Body Before head
+        result = self.body[-1]
+        except_result = [3, 3]
 
         self.assertEqual(result, except_result)
