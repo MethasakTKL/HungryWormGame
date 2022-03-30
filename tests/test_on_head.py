@@ -103,3 +103,21 @@ class OnHeadTest(unittest.TestCase):
         except_result = [[999, 1000], [1000, 1000]]
 
         self.assertEqual(result, except_result)
+
+    def test_do_on_head_move_to_neg_position(self):
+        # !!!Warning in hungryworm don't have negative postiion !!!
+        self.lenght = 2
+        self.head = [1, 0]  # V
+        self.do_on_head()
+        self.head = [1, -1]  # V
+        self.do_on_head()
+        self.head = [1, -2]  # V
+        self.do_on_head()
+        self.head = [2, -3]  # V
+        self.do_on_head()
+
+        # Check Body Last
+        result = self.body[0]
+        except_result = [1, -1]
+
+        self.assertEqual(result, except_result)
