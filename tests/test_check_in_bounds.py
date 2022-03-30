@@ -15,10 +15,10 @@ class CheckInBoundTest(unittest.TestCase):
         position = [10, 10]
         result = self.check_in_bounds(position)
         
-        self.assertTrue(result)
+        self.assertFalse(result)
     
     def test_not_in_bounds(self):
         position = [5, 5]
         result = self.check_in_bounds(position)
 
-        self.assertFalse(result)
+        self.assertTrue(result)
