@@ -22,3 +22,9 @@ class CheckInBoundTest(unittest.TestCase):
         result = self.check_in_bounds(position)
 
         self.assertTrue(result)
+    
+    def test_not_in_bounds_20_20(self):
+        position = [20, 20]
+        result = self.check_in_bounds(position)
+
+        self.assertFalse(result)
