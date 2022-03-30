@@ -7,7 +7,6 @@ class NewAppleLocationTest(unittest.TestCase):
         self.apple = []
         self.body = []
 
-
     # Unittest Section
     def do_new_apple_location(self):
         from random import randint
@@ -28,10 +27,12 @@ class NewAppleLocationTest(unittest.TestCase):
 
         self.assertNotEqual(apple1, apple2)
 
-    def test_new_apple_location(self):
+    def test_new_apple_3_times(self):
         self.do_new_apple_location()
         apple1 = self.apple
         self.do_new_apple_location()
         apple2 = self.apple
+        self.do_new_apple_location()
+        apple3 = self.apple
 
-        self.assertNotEqual(apple1, apple2)
+        self.assertNotEqual(apple1, apple2, apple3)
