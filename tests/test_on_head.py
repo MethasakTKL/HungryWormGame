@@ -69,8 +69,25 @@ class OnHeadTest(unittest.TestCase):
         self.head = [3, 1]  # >>
         self.do_on_head()
 
-        # Check Body Before head
+        # Check Body Last
         result = self.body[0]
         except_result = [1, 1]
+
+        self.assertEqual(result, except_result)
+
+    def test_do_on_head_y_axis_check_last(self):
+        self.lenght = 2
+        self.head = [1, 1]  # -
+        self.do_on_head()
+        self.head = [1, 2]  # ^
+        self.do_on_head()
+        self.head = [1, 3]  # ^
+        self.do_on_head()
+        self.head = [2, 4]  # ^
+        self.do_on_head()
+
+        # Check Body Last
+        result = self.body[0]
+        except_result = [1, 2]
 
         self.assertEqual(result, except_result)
