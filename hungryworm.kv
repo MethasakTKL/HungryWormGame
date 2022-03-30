@@ -24,8 +24,17 @@
         Rectangle
             pos: self.pos 
             size: self.size
-            source: self.image_source
-            
+            source: 'images/Head.png'
+
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: self.angle
+            axis: 0, 0, 1
+            origin: self.center
+    canvas.after:
+        PopMatrix
+         
 <Apple>
     bgcolor: 1, 1, 1, 1
     size_hint: None, None

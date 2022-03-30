@@ -69,7 +69,7 @@ class Sprite(Widget):
 SPRITES = defaultdict(lambda: Sprite())
 
 class WormHead(Sprite):
-    image_source = kp.StringProperty('images/Headup.png')
+    angle = kp.NumericProperty(0)
 
 class Apple(Sprite):
     pass
@@ -183,13 +183,13 @@ class HungryWormGame(Widget):
             
             # Change direction of head graphic
             if new_direction == LEFT:
-                self.head_sprite.image_source = 'images/Headleft.png'
+                self.head_sprite.angle = 90
             elif new_direction == RIGHT:
-                self.head_sprite.image_source = 'images/Headright.png'
+                self.head_sprite.angle = 270
             elif new_direction == UP:
-                self.head_sprite.image_source = 'images/Headup.png'
+                self.head_sprite.angle = 0
             elif new_direction == DOWN:
-                self.head_sprite.image_source = 'images/Headdown.png'
+                self.head_sprite.angle = 180
 
     # Function spawn Head in Random position
     @property
