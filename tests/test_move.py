@@ -23,10 +23,10 @@ class MoveTest(unittest.TestCase):
         self.body = self.body[-self.lenght :] + [self.head]
         new_pos = [sum(x) for x in zip(self.head, direction_values[self.direction])]
 
-        if (
-            not all(0 <= new_pos[x] < d for x, d in enumerate([COLS, ROWS]))
-            or new_pos in self.body
-        ):
+        if not all(0 <= new_pos[x] < d for x, d in enumerate([COLS, ROWS])):
+            return False
+            
+        if new_pos in self.body:
             return False
 
         if new_pos == self.apple:
