@@ -32,7 +32,7 @@ ROWS = int(Window.height / sprite_SIZE)
 
 # GAME Default Settings
 DEFAULT_LENGHT = 2  # Starting Worm Lenght
-MOVESPEED = 0.15  # Game Speed
+MOVESPEED = 1  # Game Speed
 ALPHA = 0.5
 
 # set directions
@@ -174,6 +174,7 @@ class HungryWormGame(Widget):
 
     # Head Position
     def on_head(self, *args):
+        print(self.head, "IS", self.body)
         self.body = self.body[-self.lenght :] + [self.head]
 
     # Body Position
