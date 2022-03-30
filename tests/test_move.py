@@ -36,12 +36,13 @@ class MoveTest(unittest.TestCase):
                 self.high_score = self.score
             self.apple = self.new_apple_location
 
-        return new_pos
+        self.head = new_pos
 
     def test_move_up_1_times(self):
         self.head = [5, 5]
         self.lenght = 3
         self.direction = UP
-        new_head = self.do_move()
+        self.do_move()
 
-        self.assertEqual(new_head, [5, 6])
+        self.assertEqual(self.head, [5, 6])
+
