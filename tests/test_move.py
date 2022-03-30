@@ -46,3 +46,13 @@ class MoveTest(unittest.TestCase):
 
         self.assertEqual(self.head, [5, 6])
 
+
+    def test_move_down_3_times(self):
+        self.head = [5, 5]
+        self.lenght = 3
+        self.direction = DOWN
+        self.do_move()
+        self.do_move()
+        self.do_move()
+
+        self.assertEqual(self.head, [5, 2])
