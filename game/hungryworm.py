@@ -112,12 +112,10 @@ class HungryWormGame(Widget):
         self.die_sound = SoundLoader.load("sounds/die.wav")
         self.eat_sound = SoundLoader.load("sounds/eat.wav")
         self.playtime_sound.loop = True
-        self.playtime_sound.play()
 
+        # Create sprites
         self.apple_sprite = Apple()
         self.head_sprite = WormHead()
-
-        self.score = 0  # set score to 0s
 
     # Required for Window.request_keyboard
     def _on_keyboard_closed(self):
