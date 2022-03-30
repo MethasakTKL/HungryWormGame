@@ -64,9 +64,9 @@ class OnHeadTest(unittest.TestCase):
         self.lenght = 2
         self.head = [1, 1]  # -
         self.do_on_head()
-        self.head = [1, 2]  # >
+        self.head = [2, 1]  # >
         self.do_on_head()
-        self.head = [2, 2]  # >>
+        self.head = [3, 1]  # >>
         self.do_on_head()
 
         # Check Body Before head
