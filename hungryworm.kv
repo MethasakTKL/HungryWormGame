@@ -65,9 +65,18 @@
         font_size: 24
 
     Label:
-        id: scoreboard
+        id: score
         size_hint: None, None
         height: 
         pos: root.size[0] / 15, (9 * root.size[1] / 10.2) - 50
         text: 'Score: ' + str(root.score)
+        font_size: 24
+
+
+    Label:
+        id: highscore
+        size_hint: None, None
+        height: 
+        pos: root.size[0] / 15, (9 * root.size[1] / 11) - 50
+        text: 'High Score: ' + str(root.high_score)
         font_size: 24

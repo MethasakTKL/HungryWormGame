@@ -93,6 +93,7 @@ class HungryWormGame(Widget):
 
     # Score
     score = kp.NumericProperty(0)
+    high_score = kp.NumericProperty(0)
 
     # When the app start
     def __init__(self, **kwargs):
@@ -115,7 +116,7 @@ class HungryWormGame(Widget):
         self.head_sprite = WormHead()
         self.apple = self.new_apple_location  # spawn apple
         self.head = self.new_head_location  # spawn worm
-        self.score = 0  # set score to 0
+        self.score = 0  # set score to 0s
         Clock.schedule_interval(self.move, MOVESPEED)  # setting fps in game
 
     # Required for Window.request_keyboard
@@ -216,6 +217,8 @@ class HungryWormGame(Widget):
         if new_head == self.apple:
             self.lenght += 1
             self.score += 1
+            if self.score >= self.high_score:
+                self.high_score = self.score
             self.apple = self.new_apple_location
             self.eat_sound.play()
 
