@@ -76,8 +76,8 @@ class Apple(Widget):
     bgcolor = kp.ListProperty([0, 0, 0, 0])
 
 class HungryWorm(App):
-    icon = './images/Logo.png'
-    image_source = kp.StringProperty("images/Headup.png")
+    icon = 'images/Logo.png'
+    image_source = kp.StringProperty('images/Headup.png')
 
     # Worm Section
     sprize_size = kp.NumericProperty(SPRITE_SIZE)
@@ -112,7 +112,7 @@ class HungryWorm(App):
         Window.bind(on_touch_move=self._on_touch_move)
 
         # Load sounds
-        self.playtime_sound = SoundLoader.load("sounds/Backsound.mp3")
+        self.playtime_sound = SoundLoader.load('sounds/Backsound.mp3')
         self.die_sound = SoundLoader.load('sounds/die.wav')
         self.eat_sound = SoundLoader.load('sounds/eat.wav')
         self.playtime_sound.loop = True
@@ -148,7 +148,7 @@ class HungryWorm(App):
     def on_apple(self, *args):
         self.apple_sprite.coord = self.apple
         if not self.apple_sprite.parent:
-            print("Spawn Apple")
+            print('Spawn Apple')
             self.root.add_widget(self.apple_sprite)
 
     # Needed by Window.request_keyboard
@@ -189,13 +189,13 @@ class HungryWorm(App):
             
             # Change direction of head graphic
             if new_direction == LEFT:
-                self.image_source = "images/Headleft.png"
+                self.image_source = 'images/Headleft.png'
             elif new_direction == RIGHT:
-                self.image_source = "images/Headright.png"
+                self.image_source = 'images/Headright.png'
             elif new_direction == UP:
-                self.image_source = "images/Headup.png"
+                self.image_source = 'images/Headup.png'
             elif new_direction == DOWN:
-                self.image_source = "images/Headdown.png"
+                self.image_source = 'images/Headdown.png'
 
     # Function spawn Head in Random position
     @property
