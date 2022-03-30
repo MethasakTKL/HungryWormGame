@@ -9,7 +9,7 @@ from kivy.core.audio import SoundLoader
 from collections import defaultdict
 from random import randint
 
-''' 
+""" 
 Code Understanding
 
 head: worm's head position 
@@ -23,59 +23,54 @@ head_sprite: graphic of the head
 Explain Graphic Algorithm 
 -- When get variable [x, y] -->  Display variables on screen at position [x, y].
 
-'''
+"""
 
 sprite_SIZE = sp(25)
 COLS = int(Window.width / sprite_SIZE)
 ROWS = int(Window.height / sprite_SIZE)
 
 # GAME Default Settings
-DEFAULT_LENGHT = 2    # Starting Worm Lenght
-MOVESPEED = .15       # Game Speed
-ALPHA = .5
+DEFAULT_LENGHT = 2  # Starting Worm Lenght
+MOVESPEED = 0.15  # Game Speed
+ALPHA = 0.5
 
 # set directions
-LEFT = 'left'
-RIGHT = 'right'
-UP = 'up'
-DOWN = 'down'
+LEFT = "left"
+RIGHT = "right"
+UP = "up"
+DOWN = "down"
 
-direction_values = {
-    LEFT: [-1, 0],
-    RIGHT: [1, 0],
-    UP: [0, 1],
-    DOWN: [0, -1]
-}
+direction_values = {LEFT: [-1, 0], RIGHT: [1, 0], UP: [0, 1], DOWN: [0, -1]}
 
 direction_group = {
-    LEFT: 'horizontal',
-    RIGHT: 'horizontal',
-    UP: 'vertical',
-    DOWN: 'vertical'
+    LEFT: "horizontal",
+    RIGHT: "horizontal",
+    UP: "vertical",
+    DOWN: "vertical",
 }
 
-direction_keys = {
-    'a': LEFT,
-    'd': RIGHT,
-    'w': UP,
-    's': DOWN
-}
+direction_keys = {"a": LEFT, "d": RIGHT, "w": UP, "s": DOWN}
+
 
 class WormBody(Widget):
     sprite_size = kp.NumericProperty(sprite_SIZE)
     coord = kp.ListProperty([0, 0])
     bgcolor = kp.ListProperty([0, 0, 0, 0])
 
+
 BODY_SPRITE = defaultdict(lambda: WormBody())
+
 
 class WormHead(Widget):
     sprite_size = kp.NumericProperty(sprite_SIZE)
     coord = kp.ListProperty([0, 0])
     angle = kp.NumericProperty(0)
 
+
 class Apple(Widget):
     sprite_size = kp.NumericProperty(sprite_SIZE)
     coord = kp.ListProperty([0, 0])
+
 
 class HungryWormGame(Widget):
     # Worm Section
@@ -91,7 +86,7 @@ class HungryWormGame(Widget):
 
     # Direction Section
     direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN))
-    buffer_direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN, ''))
+    buffer_direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN, ""))
     block_input = kp.BooleanProperty(False)
 
     alpha = kp.NumericProperty(0)
@@ -110,18 +105,18 @@ class HungryWormGame(Widget):
         Window.bind(on_touch_move=self._on_touch_move)
 
         # Load sounds
-        self.playtime_sound = SoundLoader.load('sounds/Backsound.mp3')
-        self.die_sound = SoundLoader.load('sounds/die.wav')
-        self.eat_sound = SoundLoader.load('sounds/eat.wav')
+        self.playtime_sound = SoundLoader.load("sounds/Backsound.mp3")
+        self.die_sound = SoundLoader.load("sounds/die.wav")
+        self.eat_sound = SoundLoader.load("sounds/eat.wav")
         self.playtime_sound.loop = True
         self.playtime_sound.play()
-        
+
         self.apple_sprite = Apple()
         self.head_sprite = WormHead()
-        self.apple = self.new_apple_location # spawn apple
-        self.head = self.new_head_location # spawn worm
-        self.score = 0 # set score to 0
-        Clock.schedule_interval(self.move, MOVESPEED) # setting fps in game
+        self.apple = self.new_apple_location  # spawn apple
+        self.head = self.new_head_location  # spawn worm
+        self.score = 0  # set score to 0
+        Clock.schedule_interval(self.move, MOVESPEED)  # setting fps in game
 
     # Required for Window.request_keyboard
     def _on_keyboard_closed(self):
@@ -150,9 +145,9 @@ class HungryWormGame(Widget):
         elif touch.y <= self._touch_point[1] - 50:
             self.try_change_direction(DOWN)
 
-    # Head Position 
+    # Head Position
     def on_head(self, *args):
-        self.body = self.body[-self.lenght:] + [self.head]
+        self.body = self.body[-self.lenght :] + [self.head]
 
     # Body Position
     def on_body(self, *args):
@@ -172,7 +167,7 @@ class HungryWormGame(Widget):
     def on_apple(self, *args):
         self.apple_sprite.coord = self.apple
         if not self.apple_sprite.parent:
-            print('Spawn Apple')
+            print("Spawn Apple")
             self.add_widget(self.apple_sprite)
 
     # Change Worm Movement Direction
@@ -183,7 +178,7 @@ class HungryWormGame(Widget):
             else:
                 self.direction = new_direction
                 self.block_input = True
-            
+
             # Change direction of head graphic
             if new_direction == LEFT:
                 self.head_sprite.angle = 90
@@ -211,8 +206,7 @@ class HungryWormGame(Widget):
     def move(self, *args):
         self.block_input = False
 
-        new_head = [sum(x) for x in zip(
-            self.head, direction_values[self.direction])]
+        new_head = [sum(x) for x in zip(self.head, direction_values[self.direction])]
 
         # Check postion worm if [ In bounds ] or [ Collide itself ] --> Die
         if not self.check_in_bounds(new_head) or new_head in self.body:
@@ -227,24 +221,24 @@ class HungryWormGame(Widget):
 
         if self.buffer_direction:
             self.try_change_direction(self.buffer_direction)
-            self.buffer_direction = ''
+            self.buffer_direction = ""
 
         self.head = new_head
-    
+
     # Function check worm out of screen --> Die
     def check_in_bounds(self, pos):
         return all(0 <= pos[x] < dim for x, dim in enumerate([COLS, ROWS]))
-    
+
     # Function Die --> reset lenght, body, apple and Spawn Snake in new position
     def die(self):
         # Play die sound
         self.die_sound.play()
-        
+
         # Clear widget
         for index, coord in enumerate(self.body):
-                body_sprite = BODY_SPRITE[index]
-                body_sprite.coord = coord
-                self.remove_widget(body_sprite)
+            body_sprite = BODY_SPRITE[index]
+            body_sprite.coord = coord
+            self.remove_widget(body_sprite)
         self.apple_body_sprite.clear_widgets()
         self.body.clear()
 
@@ -258,12 +252,14 @@ class HungryWormGame(Widget):
         self.head = self.new_head_location
         self.score = 0
 
+
 class HungryWormApp(App):
-    title = kp.StringProperty('Hungry Worm')
-    icon = kp.StringProperty('images/Logo.png')
+    title = kp.StringProperty("Hungry Worm")
+    icon = kp.StringProperty("images/Logo.png")
 
     def build(self):
         return HungryWormGame()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     HungryWormApp().run()
