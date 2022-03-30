@@ -52,25 +52,24 @@ direction_group = {
 direction_keys = {"a": LEFT, "d": RIGHT, "w": UP, "s": DOWN}
 
 
-class WormBody(Widget):
+class Sprite(Widget):
     sprite_size = kp.NumericProperty(sprite_SIZE)
     coord = kp.ListProperty([0, 0])
     bgcolor = kp.ListProperty([0, 0, 0, 0])
 
 
+class WormBody(Sprite):
+    pass
+
 BODY_SPRITE = defaultdict(lambda: WormBody())
 
 
-class WormHead(Widget):
-    sprite_size = kp.NumericProperty(sprite_SIZE)
-    coord = kp.ListProperty([0, 0])
+class WormHead(Sprite):
     angle = kp.NumericProperty(0)
 
 
-class Apple(Widget):
-    sprite_size = kp.NumericProperty(sprite_SIZE)
-    coord = kp.ListProperty([0, 0])
-
+class Apple(Sprite):
+    pass
 
 class HungryWormGame(Widget):
     # Worm Section
