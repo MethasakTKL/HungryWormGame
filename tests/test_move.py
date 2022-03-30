@@ -28,7 +28,7 @@ class MoveTest(unittest.TestCase):
             return False
 
         if new_pos in self.body:
-            self.head = "out bounds"
+            self.head = "inside body"
             return False
 
         if new_pos == self.apple:
