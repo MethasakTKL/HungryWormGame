@@ -62,3 +62,13 @@ class MoveTest(unittest.TestCase):
         self.do_move()
 
         self.assertEqual(self.head, [7, 5])
+
+    def test_move_up_1_left_2(self):
+        self.head = [5, 5]
+        self.direction = UP
+        self.do_move()
+        self.direction = LEFT
+        self.do_move()
+        self.do_move()
+
+        self.assertEqual(self.head, [3, 6])
