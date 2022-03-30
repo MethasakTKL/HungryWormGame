@@ -24,9 +24,11 @@ class MoveTest(unittest.TestCase):
         new_pos = [sum(x) for x in zip(self.head, direction_values[self.direction])]
 
         if not all(0 <= new_pos[x] < d for x, d in enumerate([COLS, ROWS])):
+            self.head = "out bounds"
             return False
 
         if new_pos in self.body:
+            self.head = "out bounds"
             return False
 
         if new_pos == self.apple:
@@ -71,3 +73,10 @@ class MoveTest(unittest.TestCase):
         self.do_move()
 
         self.assertEqual(self.head, [3, 6])
+
+    def test_move_to_out_bounds(self):
+        self.head = [5, 9]
+        self.direction = UP
+        self.do_move()
+
+        self.assertEqual(self.head, "out bounds")
