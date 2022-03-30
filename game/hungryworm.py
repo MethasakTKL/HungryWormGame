@@ -97,6 +97,8 @@ class HungryWormGame(Widget):
     score = kp.NumericProperty(0)
     high_score = kp.NumericProperty(0)
 
+    enable_game_input = kp.BooleanProperty(False)
+
     # When the app start
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -123,8 +125,6 @@ class HungryWormGame(Widget):
         self._keyboard = None
 
     def start_game(self):
-        self.playtime_sound.play()
-
         # Clear widget
         for index, coord in enumerate(self.body):
             body_sprite = BODY_SPRITE[index]
@@ -135,20 +135,27 @@ class HungryWormGame(Widget):
         self.head_sprite.clear_widgets()
         self.body.clear()
 
-        self.clock = Clock.schedule_interval(self.move, MOVESPEED)
-
         # Reset values of the game
         self.lenght = DEFAULT_LENGHT
         self.apple = self.new_apple_location
         self.head = self.new_head_location
         self.score = 0
 
+        # Start play time sound
+        self.playtime_sound.play()
+
+        # Enable game input
+        self.enable_game_input = True
+
+        # Start game timer
+        self.clock = Clock.schedule_interval(self.move, MOVESPEED)
+
     # Keyboard input handler
     def _on_key_down(self, keyboard, keycode, text, modifiers):
         try:
             self.try_change_direction(direction_keys[text])
         except KeyError:
-            pass
+            return
 
     # Touchscreen input handler
     def _on_touch_down(self, widget, touch):
@@ -192,6 +199,9 @@ class HungryWormGame(Widget):
 
     # Change Worm Movement Direction
     def try_change_direction(self, new_direction):
+        if not self.enable_game_input:
+            return
+
         if direction_group[new_direction] != direction_group[self.direction]:
             if self.block_input:
                 self.buffer_direction = new_direction
@@ -254,14 +264,21 @@ class HungryWormGame(Widget):
 
     # Function Die --> reset lenght, body, apple and Spawn Snake in new position
     def die(self):
-        # Play die sound
+        # Stop play time sound
         self.playtime_sound.stop()
+
+        # Play die sound
         self.die_sound.play()
-        self.clock.cancel()
 
         # Red screen effect
         self.alpha = ALPHA
         Animation(alpha=0, duration=MOVESPEED).start(self)
+
+        # Disable game input
+        self.enable_game_input = False
+
+        # Stop game timer
+        self.clock.cancel()
 
         # Button Click to start
         self.ids.start_button.disabled = False
