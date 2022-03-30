@@ -219,7 +219,6 @@ class HungryWormGame(Widget):
     # Fucntion spawn Apple in Random position
     @property
     def new_apple_location(self):
-        print(self.apple)
         while True:
             new_apple = [randint(1, dim - 1) for dim in [COLS, ROWS]]
             print(new_apple)
