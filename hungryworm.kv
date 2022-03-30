@@ -11,7 +11,7 @@
         Rectangle
             pos: self.pos
             size: self.size
-            source: "images/BodyNew.png"
+            source: 'images/BodyNew.png'
 
 <WormHead>
     bgcolor: 1, 1, 1, 1
@@ -26,9 +26,6 @@
             size: self.size
             source: app.image_source
             
-    
-
-
 <Apple>
     bgcolor: 1, 1, 1, 1
     size_hint: None, None
@@ -40,7 +37,7 @@
         Rectangle
             pos: self.pos
             size: self.size
-            source: "images/AppleNew.png"
+            source: 'images/AppleNew.png'
 
 RelativeLayout:
     canvas:
@@ -50,11 +47,18 @@ RelativeLayout:
             pos: self.pos
             size: self.size
     
-
     Label:
         id: header
         size_hint: None, None
         height: 
         pos: root.size[0] / 15, 9 * root.size[1] / 10.2
-        text: "Hungry Worm"
+        text: 'Hungry Worm'
+        font_size: 24
+
+    Label:
+        id: scoreboard
+        size_hint: None, None
+        height: 
+        pos: root.size[0] / 15, (9 * root.size[1] / 10.2) - 50
+        text: 'Score: ' + str(app.score)
         font_size: 24

@@ -99,6 +99,9 @@ class HungryWorm(App):
 
     alpha = kp.NumericProperty(0)
 
+    # Score
+    score = kp.NumericProperty(0)
+
     # When the app start
     def on_start(self):
         
@@ -119,6 +122,7 @@ class HungryWorm(App):
         self.head_sprite = WormHead()
         self.apple = self.new_apple_location # spawn apple
         self.head = self.new_head_location # spawn worm
+        self.score = 0 # set score to 0
         Clock.schedule_interval(self.move, MOVESPEED) # setting fps in game
 
     # Head Position 
@@ -220,6 +224,7 @@ class HungryWorm(App):
         # If Head's position on Apple's position --> +1 Lenght
         if new_head == self.apple:
             self.lenght += 1
+            self.score += 1
             self.apple = self.new_apple_location
             self.eat_sound.play()
 
@@ -254,6 +259,7 @@ class HungryWorm(App):
         self.lenght = DEFAULT_LENGHT
         self.apple = self.new_apple_location
         self.head = self.new_head_location
+        self.score = 0
 
 if __name__ == '__main__':
     HungryWorm().run()
