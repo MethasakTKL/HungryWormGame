@@ -68,11 +68,14 @@ class WormBody(Widget):
 
 BODY_SPRITE = defaultdict(lambda: WormBody())
 
-class WormHead(WormBody):
+class WormHead(Widget):
+    sprite_size = kp.NumericProperty(sprite_SIZE)
+    coord = kp.ListProperty([0, 0])
     angle = kp.NumericProperty(0)
 
-class Apple(WormBody):
-    pass
+class Apple(Widget):
+    sprite_size = kp.NumericProperty(sprite_SIZE)
+    coord = kp.ListProperty([0, 0])
 
 class HungryWormGame(Widget):
     # Worm Section
