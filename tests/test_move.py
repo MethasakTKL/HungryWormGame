@@ -40,7 +40,6 @@ class MoveTest(unittest.TestCase):
 
     def test_move_up_1_times(self):
         self.head = [5, 5]
-        self.lenght = 3
         self.direction = UP
         self.do_move()
 
@@ -49,7 +48,6 @@ class MoveTest(unittest.TestCase):
 
     def test_move_down_3_times(self):
         self.head = [5, 5]
-        self.lenght = 3
         self.direction = DOWN
         self.do_move()
         self.do_move()
