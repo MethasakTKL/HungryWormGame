@@ -1,3 +1,4 @@
+import random
 from kivy.app import App
 from kivy import properties as kp
 from kivy.clock import Clock
@@ -125,7 +126,7 @@ class HungryWormGame(Widget):
 
     def start_game(self):
         self.playtime_sound.play()
-        
+
         # Clear widget
         for index, coord in enumerate(self.body):
             body_sprite = BODY_SPRITE[index]
@@ -137,7 +138,7 @@ class HungryWormGame(Widget):
         self.body.clear()
 
         self.clock = Clock.schedule_interval(self.move, MOVESPEED)
-        
+
         # Reset values of the game
         self.lenght = DEFAULT_LENGHT
         self.apple = self.new_apple_location
@@ -218,8 +219,10 @@ class HungryWormGame(Widget):
     # Fucntion spawn Apple in Random position
     @property
     def new_apple_location(self):
+        print(self.apple)
         while True:
             new_apple = [randint(1, dim - 1) for dim in [COLS, ROWS]]
+            print(new_apple)
             if new_apple not in self.body and new_apple != self.apple:
                 return new_apple
 
@@ -266,5 +269,3 @@ class HungryWormGame(Widget):
         # Button Click to start
         self.ids.start_button.disabled = False
         self.ids.start_button.opacity = 1
-
-

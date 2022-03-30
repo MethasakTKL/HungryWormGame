@@ -1,6 +1,6 @@
 from kivy.app import App
 from kivy import properties as kp
-from game.hungryworm import HungryWormGame
+from games.hungryworm import HungryWormGame
 
 class HungryWormApp(App):
     title = kp.StringProperty("Hungry Worm")
