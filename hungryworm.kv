@@ -63,15 +63,24 @@
         pos: root.size[0] / 15, 9 * root.size[1] / 10.2
         text: 'Hungry Worm'
         font_size: 24
+        font_name: "Comic"
+        
 
     Button:
         text: "Press to start"
         id: start_button
-        pos: (root.width/2, root.height / 2)
+        pos: (root.width/2.4, root.height / 2)
+        size: 150, 50
+        size_hint: None, None
         on_release:
             self.disabled = True
             self.opacity = 0
             root.start_game()
+        canvas:
+            Rectangle
+                pos: self.pos
+                size: self.size
+                source: 'images/Start.png'
 
     Label:
         id: score
@@ -79,7 +88,8 @@
         height: 
         pos: root.size[0] / 15, (9 * root.size[1] / 10.2) - 50
         text: 'Score: ' + str(root.score)
-        font_size: 24
+        font_size: 17
+        font_name: "Comic"
 
 
     Label:
@@ -88,4 +98,5 @@
         height: 
         pos: root.size[0] / 15, (9 * root.size[1] / 11) - 50
         text: 'High Score: ' + str(root.high_score)
-        font_size: 24
+        font_size: 17
+        font_name: "Comic"
