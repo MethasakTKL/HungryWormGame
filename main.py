@@ -256,6 +256,7 @@ class HungryWormGame(Widget):
         self.score = 0
 
 class HungryWormApp(App):
+    title = kp.StringProperty('Hungry Worm')
     icon = kp.StringProperty('images/Logo.png')
 
     def build(self):
