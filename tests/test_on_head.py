@@ -27,3 +27,16 @@ class OnHeadTest(unittest.TestCase):
 
         self.assertEqual(result, except_result)
 
+    def test_do_on_head_check_in_for_loop_check_last(self):
+        self.lenght = 4
+        for i in range(1, 10):
+            self.head = [5, i]
+            self.do_on_head()
+
+        # End loop with head in position [5, 9]
+        # Body:Lenght4:-->Head: [5, 5]->[5, 6]->[5, 7]->[5, 8]->[5, 9]
+        # Last Body is [5, 5]
+        result = self.body[0]
+        except_result = [5, 5]
+
+        self.assertEqual(result, except_result)
