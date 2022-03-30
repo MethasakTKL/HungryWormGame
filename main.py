@@ -124,6 +124,8 @@ class HungryWormGame(Widget):
         self._keyboard = None
 
     def start_game(self):
+        self.playtime_sound.play()
+        
         # Clear widget
         for index, coord in enumerate(self.body):
             body_sprite = BODY_SPRITE[index]
@@ -253,6 +255,7 @@ class HungryWormGame(Widget):
     # Function Die --> reset lenght, body, apple and Spawn Snake in new position
     def die(self):
         # Play die sound
+        self.playtime_sound.stop()
         self.die_sound.play()
         self.clock.cancel()
 
