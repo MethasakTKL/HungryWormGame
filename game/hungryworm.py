@@ -32,7 +32,7 @@ ROWS = int(Window.height / sprite_SIZE)
 
 # GAME Default Settings
 DEFAULT_LENGHT = 2  # Starting Worm Lenght
-MOVESPEED = 1  # Game Speed
+MOVESPEED = 0.1  # Game Speed
 ALPHA = 0.5
 
 # set directions
