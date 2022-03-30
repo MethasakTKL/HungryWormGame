@@ -15,6 +15,8 @@ class NewAppleLocationTest(unittest.TestCase):
                 return new_apple
 
     def test_new_apple_location(self):
+        self.body = [5, 5]
+        self.apple = [10, 5]
         apple1 = self.do_new_apple_location()
         apple2 = self.do_new_apple_location()
 
