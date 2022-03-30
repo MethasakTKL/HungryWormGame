@@ -3,11 +3,11 @@
 <Sprite>
     bgcolor: 1, 1, 1, 1
     size_hint: None, None
-    size: [app.sprize_size] * 2
-    pos: [x * app.sprize_size for x in self.coord]
+    size: [self.sprize_size] * 2
+    pos: [x * self.sprize_size for x in self.coord]
     canvas:
         Color
-            rgba:self.bgcolor
+            rgba: self.bgcolor
         Rectangle
             pos: self.pos
             size: self.size
@@ -16,33 +16,33 @@
 <WormHead>
     bgcolor: 1, 1, 1, 1
     size_hint: None, None
-    size: [app.sprize_size] * 2
-    pos: [x * app.sprize_size for x in self.coord]
+    size: [self.sprize_size] * 2
+    pos: [x * self.sprize_size for x in self.coord]
     canvas:
         Color
-            rgba:self.bgcolor
+            rgba: self.bgcolor
         Rectangle
             pos: self.pos 
             size: self.size
-            source: app.image_source
+            source: self.image_source
             
 <Apple>
     bgcolor: 1, 1, 1, 1
     size_hint: None, None
-    size: [app.sprize_size] * 2
-    pos: [x * app.sprize_size for x in self.coord]
+    size: [self.sprize_size] * 2
+    pos: [x * self.sprize_size for x in self.coord]
     canvas:
         Color
-            rgba:self.bgcolor
+            rgba: self.bgcolor
         Rectangle
             pos: self.pos
             size: self.size
             source: 'images/AppleNew.png'
 
-RelativeLayout:
+<HungryWormGame>
     canvas:
         Color
-            rgba: 1, 0, 0, app.alpha
+            rgba: 1, 0, 0, self.alpha
         Rectangle
             pos: self.pos
             size: self.size
@@ -60,5 +60,5 @@ RelativeLayout:
         size_hint: None, None
         height: 
         pos: root.size[0] / 15, (9 * root.size[1] / 10.2) - 50
-        text: 'Score: ' + str(app.score)
+        text: 'Score: ' + str(root.score)
         font_size: 24
