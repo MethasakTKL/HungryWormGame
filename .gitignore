@@ -1,3 +1,4 @@
 kivy_venv
 TEST_hungrywormgame
 .coverage
+__pycache__
