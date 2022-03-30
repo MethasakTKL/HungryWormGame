@@ -235,12 +235,22 @@ class HungryWorm(App):
     
     # Function Die --> reset lenght, body, apple and Spawn Snake in new position
     def die(self):
-        self.root.clear_widgets()
+        # Play die sound
+        self.die_sound.play()
+        
+        # Clear widget
+        for index, coord in enumerate(self.body):
+                sprite = SPRITES[index]
+                sprite.coord = coord
+                self.root.remove_widget(sprite)
+        self.apple_sprite.clear_widgets()
+        self.body.clear()
+
+        # Red screen effect
         self.alpha = ALPHA
         Animation(alpha=0, duration=MOVESPEED).start(self)
-        self.die_sound.play()
 
-        self.body.clear()
+        # Reset value of game
         self.lenght = DEFAULT_LENGHT
         self.apple = self.new_apple_location
         self.head = self.new_head_location
