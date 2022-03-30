@@ -9,6 +9,5 @@ class HungryWormApp(App):
     def build(self):
         return HungryWormGame()
 
-
 if __name__ == "__main__":
     HungryWormApp().run()

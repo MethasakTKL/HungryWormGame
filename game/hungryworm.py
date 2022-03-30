@@ -97,7 +97,7 @@ class HungryWormGame(Widget):
     score = kp.NumericProperty(0)
     high_score = kp.NumericProperty(0)
 
-    enable_game_input = kp.BooleanProperty(False)
+    enable_worm_controls = kp.BooleanProperty(False)
 
     # When the app start
     def __init__(self, **kwargs):
@@ -144,8 +144,8 @@ class HungryWormGame(Widget):
         # Start play time sound
         self.playtime_sound.play()
 
-        # Enable game input
-        self.enable_game_input = True
+        # Enable worm controls
+        self.enable_worm_controls = True
 
         # Start game timer
         self.clock = Clock.schedule_interval(self.move, MOVESPEED)
@@ -199,7 +199,7 @@ class HungryWormGame(Widget):
 
     # Change Worm Movement Direction
     def try_change_direction(self, new_direction):
-        if not self.enable_game_input:
+        if not self.enable_worm_controls:
             return
 
         if direction_group[new_direction] != direction_group[self.direction]:
@@ -274,8 +274,8 @@ class HungryWormGame(Widget):
         self.alpha = ALPHA
         Animation(alpha=0, duration=MOVESPEED).start(self)
 
-        # Disable game input
-        self.enable_game_input = False
+        # Disable worm controls
+        self.enable_worm_controls = False
 
         # Stop game timer
         self.clock.cancel()
