@@ -181,13 +181,14 @@ class HungryWormGame(Widget):
 
     # Keyboard input handler
     def _on_key_down(self, keyboard, keycode, text, modifiers):
-        if self.playing and self.enable_worm_controls:
+        if self.playing:
             if text in " p" or text == "spacebar" or keycode == 32:
-                return self.pause()
-        elif self.playing and not self.enable_worm_controls:
-            if text in " p" or text == "spacebar" or keycode == 32:
-                return self.resume()
-
+                if self.enable_worm_controls:
+                    return self.pause()
+                else:
+                    return self.resume()
+        
+        # Try change worm direction     
         try:
             self.try_change_direction(direction_keys[text])
         except KeyError:
