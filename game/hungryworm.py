@@ -142,6 +142,7 @@ class HungryWormGame(Widget):
 
         # Reset values of the game
         self.score = 0
+        self.status = True
         self.apple_cap = 1
         self.speed_game = MOVESPEED
         self.lenght = DEFAULT_LENGHT
@@ -157,8 +158,26 @@ class HungryWormGame(Widget):
         # Start game timer
         self.clock = Clock.schedule_interval(self.move, self.speed_game)
 
+    def pause(self):
+        self.status = False
+        self.clock.cancel()
+
+    def resume(self):
+        self.status = True
+        self.clock = Clock.schedule_interval(self.move, self.speed_game)
+
     # Keyboard input handler
     def _on_key_down(self, keyboard, keycode, text, modifiers):
+        print(keycode, text)
+        print(self.status)
+        if self.status == True:
+            if text in " p" or text == "spacebar" or keycode == 32:
+                return self.pause()
+
+        if self.status == False:
+            if text in " p" or text == "spacebar" or keycode == 32:
+                return self.resume()
+
         try:
             self.try_change_direction(direction_keys[text])
         except KeyError:
