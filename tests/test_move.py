@@ -43,9 +43,6 @@ class MoveTest(unittest.TestCase):
             pos_apple = self.apple.index(new_head)
             self.apple[pos_apple] = [0, 0]
 
-            if self.score == 14:
-                self.apple_cap = 2
-
         self.head = new_head
 
     def test_move_up_1_times(self):
