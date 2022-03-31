@@ -86,7 +86,7 @@ class HungryWormGame(Widget):
     # Apple Section
     apple = kp.ListProperty([[0, 0]])
     apple_sprite = kp.ObjectProperty(Apple)
-    apple_cap = kp.NumericProperty(2)
+    apple_cap = kp.NumericProperty(1)
     # Direction Section
     direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN))
     buffer_direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN, ""))
@@ -236,7 +236,6 @@ class HungryWormGame(Widget):
     # Fucntion spawn Apple in Random position
     @property
     def new_apple_location(self):
-        print(len(self.apple))
         while True:
             new_apple = [randint(1, dim - 1) for dim in [COLS, ROWS]]
             if new_apple not in self.body and new_apple not in self.apple:
@@ -262,6 +261,9 @@ class HungryWormGame(Widget):
             pos_apple = self.apple.index(new_head)
             self.apple[pos_apple] = self.new_apple_location
             self.eat_sound.play()
+
+        if self.score == 14:
+            self.apple_cap = 2
 
         if self.buffer_direction:
             self.try_change_direction(self.buffer_direction)
