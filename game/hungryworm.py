@@ -32,7 +32,7 @@ ROWS = int(Window.height / sprite_SIZE)
 
 # GAME Default Settings
 DEFAULT_LENGHT = 2  # Starting Worm Lenght
-MOVESPEED = 0.1  # Game Speed
+MOVESPEED = 0.15  # Game Speed
 ALPHA = 0.5
 
 # set directions
@@ -145,6 +145,7 @@ class HungryWormGame(Widget):
         self.apple.append(self.new_apple_location)
         self.head = self.new_head_location
         self.score = 0
+        self.speed_game = MOVESPEED
 
         # Start play time sound
         self.playtime_sound.play()
@@ -153,7 +154,7 @@ class HungryWormGame(Widget):
         self.enable_worm_controls = True
 
         # Start game timer
-        self.clock = Clock.schedule_interval(self.move, MOVESPEED)
+        self.clock = Clock.schedule_interval(self.move, self.speed_game)
 
     # Keyboard input handler
     def _on_key_down(self, keyboard, keycode, text, modifiers):
@@ -243,7 +244,6 @@ class HungryWormGame(Widget):
 
     # Function Move for worm
     def move(self, *args):
-
         self.block_input = False
 
         new_head = [sum(x) for x in zip(self.head, direction_values[self.direction])]
@@ -262,8 +262,13 @@ class HungryWormGame(Widget):
             self.apple[pos_apple] = self.new_apple_location
             self.eat_sound.play()
 
-        if self.score == 14:
-            self.apple_cap = 2
+            self.speed_game /= 1.025
+            self.clock.cancel()
+            self.clock = Clock.schedule_interval(self.move, self.speed_game)
+            print(self.speed_game)
+
+            if self.score == 14:
+                self.apple_cap = 2
 
         if self.buffer_direction:
             self.try_change_direction(self.buffer_direction)
