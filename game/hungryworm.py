@@ -75,6 +75,10 @@ class Apple(Sprite):
     pass
 
 
+class PauseMenu(Widget):
+    pass
+
+
 class HungryWormGame(Widget):
     # Worm Section
     head = kp.ListProperty([0, 0])
@@ -118,6 +122,8 @@ class HungryWormGame(Widget):
 
         # Create sprites
         self.head_sprite = WormHead()
+
+        self.pause_menu = PauseMenu()
 
     # Required for Window.request_keyboard
     def _on_keyboard_closed(self):
@@ -163,12 +169,14 @@ class HungryWormGame(Widget):
         self.enable_worm_controls = False
         self.playtime_sound.volume = 0
         self.clock.cancel()
+        self.ids.pause_menu.opacity = 1
 
     def resume(self):
         self.status = True
         self.enable_worm_controls = True
         self.playtime_sound.volume = 1
         self.clock = Clock.schedule_interval(self.move, self.speed_game)
+        self.ids.pause_menu.opacity = 0
 
     # Keyboard input handler
     def _on_key_down(self, keyboard, keycode, text, modifiers):
