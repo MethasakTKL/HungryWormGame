@@ -103,6 +103,9 @@ class HungryWormGame(Widget):
     high_score = kp.NumericProperty(0)
 
     enable_worm_controls = kp.BooleanProperty(False)
+    playing = kp.BooleanProperty(False)
+
+    game_speed = kp.NumericProperty(MOVESPEED)
 
     # When the app start
     def __init__(self, **kwargs):
@@ -148,9 +151,9 @@ class HungryWormGame(Widget):
 
         # Reset values of the game
         self.score = 0
-        self.status = True
+        self.playing = True
         self.apple_cap = 1
-        self.speed_game = MOVESPEED
+        self.game_speed = MOVESPEED
         self.lenght = DEFAULT_LENGHT
         self.apple.append(self.new_apple_location)
         self.head = self.new_head_location
@@ -162,32 +165,30 @@ class HungryWormGame(Widget):
         self.enable_worm_controls = True
 
         # Start game timer
-        self.clock = Clock.schedule_interval(self.move, self.speed_game)
+        self.clock = Clock.schedule_interval(self.move, self.game_speed)
 
     def pause(self):
-        self.status = False
         self.enable_worm_controls = False
         self.playtime_sound.volume = 0
         self.clock.cancel()
         self.ids.pause_menu.opacity = 1
 
     def resume(self):
-        self.status = True
         self.enable_worm_controls = True
         self.playtime_sound.volume = 1
-        self.clock = Clock.schedule_interval(self.move, self.speed_game)
+        self.clock = Clock.schedule_interval(self.move, self.game_speed)
         self.ids.pause_menu.opacity = 0
 
     # Keyboard input handler
     def _on_key_down(self, keyboard, keycode, text, modifiers):
-        if self.status == True:
+        if self.playing:
             if text in " p" or text == "spacebar" or keycode == 32:
-                return self.pause()
-
-        if self.status == False:
-            if text in " p" or text == "spacebar" or keycode == 32:
-                return self.resume()
-
+                if self.enable_worm_controls:
+                    return self.pause()
+                else:
+                    return self.resume()
+        
+        # Try change worm direction     
         try:
             self.try_change_direction(direction_keys[text])
         except KeyError:
@@ -283,19 +284,24 @@ class HungryWormGame(Widget):
             return self.die()
 
         # If Head's position on Apple's position --> +1 Lenght
-        if new_head in self.apple:
-            self.lenght += 1
-            self.score += 1
-            if self.score >= self.high_score:
-                self.high_score = self.score
-            pos_apple = self.apple.index(new_head)
-            self.apple[pos_apple] = self.new_apple_location
+        if new_head in self.apple:      
+            # Play eat sound
             self.eat_sound.play()
 
+            self.lenght += 1
+            self.score += 1
+
+            if self.score >= self.high_score:
+                self.high_score = self.score
+
+            pos_apple = self.apple.index(new_head)
+
+            self.apple[pos_apple] = self.new_apple_location
+
             if self.score < 14:
-                self.speed_game /= 1.025
+                self.game_speed /= 1.025
                 self.clock.cancel()
-                self.clock = Clock.schedule_interval(self.move, self.speed_game)
+                self.clock = Clock.schedule_interval(self.move, self.game_speed)
 
             if self.score == 14:
                 self.apple_cap = 2
@@ -324,6 +330,9 @@ class HungryWormGame(Widget):
 
         # Disable worm controls
         self.enable_worm_controls = False
+        
+        # Game over!!!
+        self.playing = False
 
         # Stop game timer
         self.clock.cancel()
