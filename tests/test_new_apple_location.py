@@ -65,3 +65,16 @@ class NewAppleLocationTest(unittest.TestCase):
 
         self.assertEqual(result, expect_result)
 
+    def test_new_apple_check_location_between_rows_cols(self):
+        self.do_new_apple_location()
+        result = self.apple
+        boolean = False
+        if (
+            result[0] > self.COLS - self.COLS
+            and result[0] < self.COLS
+            and result[1] > self.ROWS - self.ROWS
+            and result[0] < self.ROWS
+        ):
+            boolean = True
+
+        self.assertTrue(boolean)
