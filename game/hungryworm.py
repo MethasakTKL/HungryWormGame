@@ -86,7 +86,7 @@ class HungryWormGame(Widget):
     # Apple Section
     apple = kp.ListProperty([[0, 0]])
     apple_sprite = kp.ObjectProperty(Apple)
-
+    apple_cap = kp.NumericProperty(2)
     # Direction Section
     direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN))
     buffer_direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN, ""))
@@ -183,7 +183,6 @@ class HungryWormGame(Widget):
 
     # Body Position
     def on_body(self, *args):
-        print(self.body)
         for index, coord in enumerate(self.body):
             if coord == self.head:
                 self.head_sprite.coord = coord
@@ -198,7 +197,9 @@ class HungryWormGame(Widget):
 
     # Setting Apple when start
     def on_apple(self, *args):
-        print(self.apple)
+        if len(self.apple) < self.apple_cap:
+            self.apple.append(self.new_apple_location)
+
         for index, coord in enumerate(self.apple):
             apple_sprite = APPLE_SPRITE[index]
             apple_sprite.coord = coord
@@ -235,6 +236,7 @@ class HungryWormGame(Widget):
     # Fucntion spawn Apple in Random position
     @property
     def new_apple_location(self):
+        print(len(self.apple))
         while True:
             new_apple = [randint(1, dim - 1) for dim in [COLS, ROWS]]
             if new_apple not in self.body and new_apple not in self.apple:
@@ -242,6 +244,7 @@ class HungryWormGame(Widget):
 
     # Function Move for worm
     def move(self, *args):
+
         self.block_input = False
 
         new_head = [sum(x) for x in zip(self.head, direction_values[self.direction])]
@@ -251,12 +254,13 @@ class HungryWormGame(Widget):
             return self.die()
 
         # If Head's position on Apple's position --> +1 Lenght
-        if new_head == self.apple:
+        if new_head in self.apple:
             self.lenght += 1
             self.score += 1
             if self.score >= self.high_score:
                 self.high_score = self.score
-            self.apple = self.new_apple_location
+            pos_apple = self.apple.index(new_head)
+            self.apple[pos_apple] = self.new_apple_location
             self.eat_sound.play()
 
         if self.buffer_direction:
