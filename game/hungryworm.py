@@ -262,13 +262,15 @@ class HungryWormGame(Widget):
             self.apple[pos_apple] = self.new_apple_location
             self.eat_sound.play()
 
-            self.speed_game /= 1.025
-            self.clock.cancel()
-            self.clock = Clock.schedule_interval(self.move, self.speed_game)
-            print(self.speed_game)
-
+            if self.score < 14:
+                self.speed_game /= 1.025
+                self.clock.cancel()
+                self.clock = Clock.schedule_interval(self.move, self.speed_game)
+                print(self.speed_game)
+            
             if self.score == 14:
                 self.apple_cap = 2
+
 
         if self.buffer_direction:
             self.try_change_direction(self.buffer_direction)
