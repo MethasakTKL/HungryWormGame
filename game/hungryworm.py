@@ -180,8 +180,6 @@ class HungryWormGame(Widget):
 
     # Keyboard input handler
     def _on_key_down(self, keyboard, keycode, text, modifiers):
-        print(keycode, text)
-        print(self.status)
         if self.status == True:
             if text in " p" or text == "spacebar" or keycode == 32:
                 return self.pause()
@@ -298,7 +296,6 @@ class HungryWormGame(Widget):
                 self.speed_game /= 1.025
                 self.clock.cancel()
                 self.clock = Clock.schedule_interval(self.move, self.speed_game)
-                print(self.speed_game)
 
             if self.score == 14:
                 self.apple_cap = 2

@@ -40,7 +40,7 @@ class MoveTest(unittest.TestCase):
             self.score += 1
             if self.score >= self.high_score:
                 self.high_score = self.score
-                self.apple = [0, 0] # Reset apple to [0, 0]
+                self.apple = [0, 0]  # Reset apple to [0, 0]
 
         self.head = new_pos
 

@@ -10,42 +10,41 @@ class CheckInBoundTest(unittest.TestCase):
         else:
             return False
 
-
     def test_in_bounds_10_10(self):
         position = [10, 10]
         result = self.check_in_bounds(position)
-        
+
         self.assertFalse(result)
-    
+
     def test_not_in_bounds_5_5(self):
         position = [5, 5]
         result = self.check_in_bounds(position)
 
-        self.assertTrue(result) 
-    
+        self.assertTrue(result)
+
     def test_in_bounds_20_20(self):
         position = [20, 20]
         result = self.check_in_bounds(position)
 
         self.assertFalse(result)
-    
+
     def test_in_bounds_m1_m1(self):
         position = [-1, -1]
         result = self.check_in_bounds(position)
 
         self.assertFalse(result)
-    
+
     def test_not_in_bounds_0_0(self):
         position = [0, 0]
         result = self.check_in_bounds(position)
 
-        self.assertTrue(result) 
-    
+        self.assertTrue(result)
+
     def test_in_bounds_9_10(self):
         position = [9, 10]
         result = self.check_in_bounds(position)
 
-        self.assertFalse(result) 
+        self.assertFalse(result)
 
     def test_not_in_bounds_9_1(self):
         position = [9, 1]
