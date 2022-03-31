@@ -64,6 +64,7 @@ class WormBody(Sprite):
 
 
 BODY_SPRITE = defaultdict(lambda: WormBody())
+APPLE_SPRITE = defaultdict(lambda: Apple())
 
 
 class WormHead(Sprite):
@@ -83,7 +84,7 @@ class HungryWormGame(Widget):
     lenght = kp.NumericProperty(DEFAULT_LENGHT)
 
     # Apple Section
-    apple = kp.ListProperty([0, 0])
+    apple = kp.ListProperty([[0, 0]])
     apple_sprite = kp.ObjectProperty(Apple)
 
     # Direction Section
@@ -116,7 +117,6 @@ class HungryWormGame(Widget):
         self.playtime_sound.loop = True
 
         # Create sprites
-        self.apple_sprite = Apple()
         self.head_sprite = WormHead()
 
     # Required for Window.request_keyboard
@@ -131,13 +131,18 @@ class HungryWormGame(Widget):
             body_sprite.coord = coord
             self.remove_widget(body_sprite)
 
-        self.apple_sprite.clear_widgets()
+        for index, coord in enumerate(self.apple):
+            apple_sprite = APPLE_SPRITE[index]
+            apple_sprite.coord = coord
+            self.remove_widget(apple_sprite)
+
         self.head_sprite.clear_widgets()
         self.body.clear()
+        self.apple.clear()
 
         # Reset values of the game
         self.lenght = DEFAULT_LENGHT
-        self.apple = self.new_apple_location
+        self.apple.append(self.new_apple_location)
         self.head = self.new_head_location
         self.score = 0
 
@@ -174,11 +179,11 @@ class HungryWormGame(Widget):
 
     # Head Position
     def on_head(self, *args):
-        print(self.head, "IS", self.body)
         self.body = self.body[-self.lenght :] + [self.head]
 
     # Body Position
     def on_body(self, *args):
+        print(self.body)
         for index, coord in enumerate(self.body):
             if coord == self.head:
                 self.head_sprite.coord = coord
@@ -193,10 +198,12 @@ class HungryWormGame(Widget):
 
     # Setting Apple when start
     def on_apple(self, *args):
-        self.apple_sprite.coord = self.apple
-        if not self.apple_sprite.parent:
-            print("Spawn Apple")
-            self.add_widget(self.apple_sprite)
+        print(self.apple)
+        for index, coord in enumerate(self.apple):
+            apple_sprite = APPLE_SPRITE[index]
+            apple_sprite.coord = coord
+            if not apple_sprite.parent:
+                self.add_widget(apple_sprite)
 
     # Change Worm Movement Direction
     def try_change_direction(self, new_direction):
@@ -230,7 +237,7 @@ class HungryWormGame(Widget):
     def new_apple_location(self):
         while True:
             new_apple = [randint(1, dim - 1) for dim in [COLS, ROWS]]
-            if new_apple not in self.body and new_apple != self.apple:
+            if new_apple not in self.body and new_apple not in self.apple:
                 return new_apple
 
     # Function Move for worm
