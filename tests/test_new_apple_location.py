@@ -55,9 +55,13 @@ class NewAppleLocationTest(unittest.TestCase):
 
         self.assertNotEqual(apple1, apple2, apple3)
 
-    @patch("tests.test_new_apple_location.NewAppleLocationTest.do_new_apple_location", return_value=[5, 5])
-    def test_mock_new_apple_location(self, do_new_apple_location):
-        result = self.do_new_apple_location()
+    @patch(
+        "tests.test_new_apple_location.NewAppleLocationTest.do_new_apple_location",
+        return_value=[5, 5],
+    )
+    def test_new_apple_mock_location(self, do_new_apple_location):
+        result = do_new_apple_location()
         expect_result = [5, 5]
 
         self.assertEqual(result, expect_result)
+
