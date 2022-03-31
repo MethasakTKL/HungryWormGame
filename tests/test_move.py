@@ -50,7 +50,9 @@ class MoveTest(unittest.TestCase):
         self.direction = UP
         self.do_move()
 
-        self.assertEqual(self.head, [5, 6])
+        result = self.head
+        expect_result = [5, 6]
+        self.assertEqual(result, expect_result)
 
     def test_move_down_3_times(self):
         self.head = [5, 5]
@@ -59,7 +61,9 @@ class MoveTest(unittest.TestCase):
         self.do_move()
         self.do_move()
 
-        self.assertEqual(self.head, [5, 2])
+        result = self.head
+        expect_result = [5, 2]
+        self.assertEqual(result, expect_result)
 
     def test_move_right_2_times(self):
         self.head = [5, 5]
@@ -67,7 +71,9 @@ class MoveTest(unittest.TestCase):
         self.do_move()
         self.do_move()
 
-        self.assertEqual(self.head, [7, 5])
+        result = self.head
+        expect_result = [7, 5]
+        self.assertEqual(result, expect_result)
 
     def test_move_up_1_left_2(self):
         self.head = [5, 5]
@@ -77,14 +83,18 @@ class MoveTest(unittest.TestCase):
         self.do_move()
         self.do_move()
 
-        self.assertEqual(self.head, [3, 6])
+        result = self.head
+        expect_result = [3, 6]
+        self.assertEqual(result, expect_result)
 
     def test_move_to_out_bounds(self):
         self.head = [5, 9]
         self.direction = UP
         self.do_move()
 
-        self.assertEqual(self.head, "out bounds")
+        result = self.head
+        expect_result = "out bounds"
+        self.assertEqual(result, expect_result)
 
     def test_move_to_inside_body(self):
         self.head = [5, 5]
@@ -92,7 +102,9 @@ class MoveTest(unittest.TestCase):
         self.direction = LEFT
         self.do_move()
 
-        self.assertEqual(self.head, "inside body")
+        result = self.head
+        expect_result = "inside body"
+        self.assertEqual(result, expect_result)
 
     def test_move_to_apple_check_pos_apple(self):
         self.head = [5, 5]
@@ -102,7 +114,9 @@ class MoveTest(unittest.TestCase):
         self.do_move()
         self.do_move()
 
-        self.assertNotEqual(self.apple, old_apple)
+        result = self.apple  # <-- on start give apple and old apple in same place
+        expect_result = old_apple
+        self.assertNotEqual(result, expect_result)  # check apple not same place
 
     def test_move_to_apple_check_lenght(self):
         self.head = [5, 5]
@@ -110,7 +124,9 @@ class MoveTest(unittest.TestCase):
         self.direction = DOWN
         self.do_move()
 
-        self.assertEqual(self.lenght, 1)
+        result = self.lenght
+        expect_result = 1
+        self.assertEqual(result, expect_result)
 
     def test_move_to_apple_check_score(self):
         self.head = [5, 5]
@@ -118,7 +134,9 @@ class MoveTest(unittest.TestCase):
         self.direction = DOWN
         self.do_move()
 
-        self.assertEqual(self.score, 1)
+        result = self.score
+        expect_result = 1
+        self.assertEqual(result, expect_result)
 
     def test_move_to_2_apple_check_score(self):
         self.direction = DOWN
@@ -128,7 +146,9 @@ class MoveTest(unittest.TestCase):
         self.apple = [[5, 3]]
         self.do_move()
 
-        self.assertEqual(self.score, 2)
+        result = self.score
+        expect_result = 2
+        self.assertEqual(result, expect_result)
 
     def test_move_to_eat_apple_2_pos(self):
         self.direction = DOWN
@@ -137,4 +157,6 @@ class MoveTest(unittest.TestCase):
         self.do_move()
         self.do_move()
 
-        self.assertEqual(self.score, 2)
+        result = self.score
+        expect_result = 2
+        self.assertEqual(result, expect_result)
