@@ -129,3 +129,12 @@ class MoveTest(unittest.TestCase):
         self.do_move()
 
         self.assertEqual(self.score, 2)
+
+    def test_move_to_eat_apple_2_pos(self):
+        self.direction = DOWN
+        self.head = [5, 5]
+        self.apple = [[5, 4], [5, 3]]
+        self.do_move()
+        self.do_move()
+
+        self.assertEqual(self.score, 2)
