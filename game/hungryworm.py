@@ -160,11 +160,13 @@ class HungryWormGame(Widget):
 
     def pause(self):
         self.status = False
+        self.enable_worm_controls = False
         self.playtime_sound.volume = 0
         self.clock.cancel()
 
     def resume(self):
         self.status = True
+        self.enable_worm_controls = True
         self.playtime_sound.volume = 1
         self.clock = Clock.schedule_interval(self.move, self.speed_game)
 
