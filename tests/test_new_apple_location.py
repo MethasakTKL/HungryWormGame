@@ -1,5 +1,7 @@
 import unittest
 
+from unittest.mock import patch
+
 
 class NewAppleLocationTest(unittest.TestCase):
     def __init__(self, *args, **kwargs):
@@ -52,3 +54,10 @@ class NewAppleLocationTest(unittest.TestCase):
         # Now the whole map is full of apples.
 
         self.assertNotEqual(apple1, apple2, apple3)
+
+    @patch("tests.test_new_apple_location.NewAppleLocationTest.do_new_apple_location", return_value=[5, 5])
+    def test_mock_new_apple_location(self, do_new_apple_location):
+        result = self.do_new_apple_location()
+        expect_result = [5, 5]
+
+        self.assertEqual(result, expect_result)
