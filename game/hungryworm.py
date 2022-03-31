@@ -86,7 +86,7 @@ class HungryWormGame(Widget):
     # Apple Section
     apple = kp.ListProperty([[0, 0]])
     apple_sprite = kp.ObjectProperty(Apple)
-    apple_cap = kp.NumericProperty(1)
+
     # Direction Section
     direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN))
     buffer_direction = kp.StringProperty(UP, options=(LEFT, RIGHT, UP, DOWN, ""))
@@ -141,11 +141,12 @@ class HungryWormGame(Widget):
         self.apple.clear()
 
         # Reset values of the game
+        self.score = 0
+        self.apple_cap = 1
+        self.speed_game = MOVESPEED
         self.lenght = DEFAULT_LENGHT
         self.apple.append(self.new_apple_location)
         self.head = self.new_head_location
-        self.score = 0
-        self.speed_game = MOVESPEED
 
         # Start play time sound
         self.playtime_sound.play()
@@ -267,10 +268,9 @@ class HungryWormGame(Widget):
                 self.clock.cancel()
                 self.clock = Clock.schedule_interval(self.move, self.speed_game)
                 print(self.speed_game)
-            
+
             if self.score == 14:
                 self.apple_cap = 2
-
 
         if self.buffer_direction:
             self.try_change_direction(self.buffer_direction)
